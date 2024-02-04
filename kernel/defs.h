@@ -56,8 +56,8 @@ void            itrunc(struct inode*);
 
 // ramdisk.c
 void            ramdiskinit(void);
-void            ramdiskintr(void);
-void            ramdiskrw(struct buf*);
+// void            ramdiskintr(void);
+void            ramdiskrw(struct buf*, int write);
 
 // kalloc.c
 void*           kalloc(void);
@@ -181,9 +181,9 @@ int             plic_claim(void);
 void            plic_complete(int);
 
 // virtio_disk.c
-void            virtio_disk_init(void);
-void            virtio_disk_rw(struct buf *, int);
-void            virtio_disk_intr(void);
+// void            virtio_disk_init(void);
+// void            virtio_disk_rw(struct buf *, int);
+// void            virtio_disk_intr(void);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

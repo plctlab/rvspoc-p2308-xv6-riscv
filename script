@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# ANSI escape code for red text
+RED='\033[0;31m'
+# ANSI escape code to reset text color
+RESET='\033[0m'
+
+make clean
+make fs.img
+make kernel/kernel && echo -e "${RED}generated kernel.bin${RESET}"
+
+cd port/fip
+./makefip.sh && echo -e "${RED}generated fip.bin${RESET}"
+
+cd ../image
+PATH=$PATH:/sbin
+rm output/* -f
+./makeimg.sh && echo -e "${RED}generated milkv-duo.img${RESET}"
+
+sudo dd if=output/milkv-duo.img of=$1 status=progress &&
+sync && echo -e "${RED}sd card burnt${RESET}"
+

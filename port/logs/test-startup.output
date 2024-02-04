@@ -1,0 +1,36 @@
+C.SCS/0/0.WD.URPL.SDI/25000000/6000000.BS/SD.PS.SD/0x0/0x1000/0x1000/0.PE.BS.SD/0x1000/0xba00/0xba00/0.BE.J.
+FSBL Jb28g9:ga33685bae:2023-12-27T23:53:14+08:00
+st_on_reason=d0000
+st_off_reason=0
+P2S/0x1000/0x3bc0da00.
+SD/0xca00/0x1000/0x1000/0.P2E.
+DPS/0xda00/0x2000.
+SD/0xda00/0x2000/0x2000/0.DPE.
+DDR init.
+ddr_param[0]=0x78075562.
+pkg_type=3
+D3_1_4
+DDR2-512M-QFN68
+Data rate=1333.
+DDR BIST PASS
+PLLS.
+PLLE.
+C2S/0xfa00/0x83f40000/0x3600.
+ 2RET.:00/0x3600/0x3600/0.RSC.
+e[M1S./501x61932020]0P/r0ex 8s0y0s0t0e0m0 0i/n0ixt2 0d0o.n
+
+RT: [1S.D5/203x214310]0C0V/I0RxT2O0S0 /B0uxi2l0d0 /D0a.tMeE:.D
+ecL 22/70 x21032230 0 .(
+/ime :2S3D:/503x:11332)0 0
+90RxT2:0 0[/10.x5230309/004.]LP2o/s0tx 4s1y4sdt3e3m4 2i/n0ixtc adfoenfe6
+k9R/T0:x 8[012.0504000503/40]xc1rfeaa0t0e/ 0cxv1if at0a0s
+C
+.ORMTP:/ 1[.1
+ 546138][cvi_spinlock_init] succeess
+RT: [1.550749]prvCmdQuRunTask run
+SD/0x13200/0x1fa00/0x1fa00/0.DCP/0x80200020/0x1000000/0x81500020/0x1fa00/1.
+DCP/0x42c05/0.
+Loader_2nd loaded.
+Use internal 32k
+Jump to monitor at 0x80000000.
+OPENSBI: next_addr=0x80200020 arg1=0x80080000Hello Milkv-duo!

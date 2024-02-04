@@ -13,7 +13,7 @@
 // the UART control registers are memory-mapped
 // at address UART0. this macro returns the
 // address of one of the registers.
-#define Reg(reg) ((volatile unsigned char *)(UART0 + reg))
+#define Reg(reg) ((volatile unsigned int *)(UART0 + 4 * reg))
 
 // the UART control registers.
 // some have different meanings for
@@ -59,7 +59,7 @@ uartinit(void)
   WriteReg(LCR, LCR_BAUD_LATCH);
 
   // LSB for baud rate of 38.4K.
-  WriteReg(0, 0x03);
+  WriteReg(0, 14);
 
   // MSB for baud rate of 38.4K.
   WriteReg(1, 0x00);
@@ -187,4 +187,10 @@ uartintr(void)
   acquire(&uart_tx_lock);
   uartstart();
   release(&uart_tx_lock);
+
+  // uart interrupt is level-triggered
+  // read ISR to clear TX interrupt
+  // RX interrupt will be cleared by uart itself
+  ReadReg(ISR);
+
 }

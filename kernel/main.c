@@ -14,20 +14,33 @@ main()
     consoleinit();
     printfinit();
     printf("\n");
-    printf("xv6 kernel is booting\n");
+    printf("\nThis system is ported by OStar Team.\n");
+    int hartid = cpuid();
+    printf("xv6 kernel is booting on hart %d\n", hartid);
     printf("\n");
     kinit();         // physical page allocator
+    printf("Initialized physical page allocator\n");
     kvminit();       // create kernel page table
+    printf("Created kernel page table\n");
     kvminithart();   // turn on paging
+    printf("Turned on paging\n");
     procinit();      // process table
+    printf("Initialized process table\n");
     trapinit();      // trap vectors
     trapinithart();  // install kernel trap vector
+    printf("Installed kernel trap vector\n");
     plicinit();      // set up interrupt controller
+    printf("Set up interrupt controller\n");
     plicinithart();  // ask PLIC for device interrupts
     binit();         // buffer cache
+    printf("Set up buffer cache\n");
     iinit();         // inode table
+    printf("Set up inode table\n");
     fileinit();      // file table
-    virtio_disk_init(); // emulated hard disk
+    printf("Set up file table\n");
+    // virtio_disk_init(); // emulated hard disk
+    ramdiskinit();   // ram disk
+    printf("Initialized disk\n");
     userinit();      // first user process
     __sync_synchronize();
     started = 1;
