@@ -22,6 +22,10 @@ int pwminit(void);
 int pwmread(int user_dst, uint64 dst, int n);
 int pwmwrite(int user_src, uint64 src, int n);
 
+int spilcdinit(void);
+int spilcdread(int user_dst, uint64 dst, int n);
+int spilcdwrite(int user_src, uint64 src, int n);
+
 void
 clockintr()
 {
@@ -45,6 +49,11 @@ devinit()
   if (pwminit() == 0) {
     devsw[PWM].read = pwmread;
     devsw[PWM].write = pwmwrite;
+  }
+
+  if (spilcdinit() == 0) {
+    devsw[SPI].read = spilcdread;
+    devsw[SPI].write = spilcdwrite;
   }
 
   /* i2c init */
