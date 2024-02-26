@@ -102,6 +102,8 @@ sys_close(void)
 
   if(argfd(0, &fd, &f) < 0)
     return -1;
+  if(f->type == FD_DEVICE && devsw[f->major].close != 0)
+    devsw[f->major].close();
   myproc()->ofile[fd] = 0;
   fileclose(f);
   return 0;
@@ -352,6 +354,8 @@ sys_open(void)
   if(ip->type == T_DEVICE){
     f->type = FD_DEVICE;
     f->major = ip->major;
+    if (devsw[f->major].open != 0)
+      devsw[f->major].open(ip);
   } else {
     f->type = FD_INODE;
     f->off = 0;
@@ -502,4 +506,19 @@ sys_pipe(void)
     return -1;
   }
   return 0;
+}
+
+uint64
+sys_ioctl(void)
+{
+  struct file *f;
+  uint32 cmd;
+  uint64 arg;
+
+  if(argfd(0, 0, &f) < 0)
+    return -1;
+  arguint(1, &cmd);
+  argulong(2, &arg);
+
+  return fileioctl(f, cmd, arg);
 }

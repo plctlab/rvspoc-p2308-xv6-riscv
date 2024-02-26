@@ -30,6 +30,13 @@ kvmmake(void)
   // virtio mmio disk interface
   // kvmmap(kpgtbl, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);
 
+  // i2c registers
+  // kvmmap(kpgtbl, I2C0, I2C0, PGSIZE, PTE_R | PTE_W);
+  kvmmap(kpgtbl, I2C1, I2C1, PGSIZE, PTE_R | PTE_W);
+  // kvmmap(kpgtbl, I2C2, I2C2, PGSIZE, PTE_R | PTE_W);
+  // kvmmap(kpgtbl, I2C3, I2C3, PGSIZE, PTE_R | PTE_W);
+  // kvmmap(kpgtbl, I2C4, I2C4, PGSIZE, PTE_R | PTE_W);
+
   // PLIC
   kvmmap(kpgtbl, PLIC, PLIC, 0x400000, PTE_R | PTE_W);
 

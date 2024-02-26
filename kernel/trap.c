@@ -190,7 +190,10 @@ devintr()
       uartintr();
     // } else if(irq == VIRTIO0_IRQ){
     //  virtio_disk_intr();
-    } else if(irq){
+    } else if (I2C0_IRQ <= irq && irq <= I2C4_IRQ){
+      i2c_dw_intr();
+    }
+    else if(irq){
       printf("unexpected interrupt irq=%d\n", irq);
     }
 

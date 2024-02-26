@@ -30,6 +30,17 @@
 // end -- start of kernel page allocation area
 // PHYSTOP -- end RAM used by the kernel
 
+#define I2C0  0x04000000L
+#define I2C1  0x04010000L
+#define I2C2  0x04020000L
+#define I2C3  0x04030000L
+#define I2C4  0x04040000L
+#define I2C0_IRQ 49
+#define I2C1_IRQ 50
+#define I2C2_IRQ 51
+#define I2C3_IRQ 52
+#define I2C4_IRQ 53
+
 // qemu puts UART registers here in physical memory.
 #define UART0 0x04140000L
 #define UART0_IRQ 44

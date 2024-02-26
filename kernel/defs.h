@@ -22,6 +22,14 @@ void            consoleinit(void);
 void            consoleintr(int);
 void            consputc(int);
 
+// i2c_dev.c
+void            i2cdev_init(void);
+
+// i2c_designware.c
+struct i2c_adapter* i2c_dw_init(short minor);
+void            i2c_dw_intr(void);
+void            i2c_dw_close(void);
+
 // exec.c
 int             exec(char*, char**);
 
@@ -33,6 +41,7 @@ void            fileinit(void);
 int             fileread(struct file*, uint64, int n);
 int             filestat(struct file*, uint64 addr);
 int             filewrite(struct file*, uint64, int n);
+int             fileioctl(struct file *f, unsigned int cmd, unsigned long arg);
 
 // fs.c
 void            fsinit(int);
@@ -134,6 +143,9 @@ int             strncmp(const char*, const char*, uint);
 char*           strncpy(char*, const char*, int);
 
 // syscall.c
+void            argint(int, int*);
+void            arguint(int, uint*);
+void            argulong(int, uint64*);
 void            argint(int, int*);
 int             argstr(int, char*, int);
 void            argaddr(int, uint64 *);

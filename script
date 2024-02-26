@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # ANSI escape code for red text
 RED='\033[0;31m'
 # ANSI escape code to reset text color

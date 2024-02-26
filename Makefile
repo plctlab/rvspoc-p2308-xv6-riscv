@@ -28,7 +28,9 @@ OBJS = \
   $K/sysfile.o \
   $K/kernelvec.o \
   $K/plic.o \
-  $K/ramdisk.o
+  $K/ramdisk.o \
+  $K/i2c_designware.o \
+  $K/i2c_dev.o
 
 # riscv64-unknown-elf- or riscv64-linux-gnu-
 # perhaps in /opt/riscv/bin
@@ -135,6 +137,7 @@ UPROGS=\
 	$U/_zombie\
 	$U/_sleep\
 	$U/_uptime\
+	$U/_i2ctest\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

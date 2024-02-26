@@ -180,3 +180,17 @@ filewrite(struct file *f, uint64 addr, int n)
   return ret;
 }
 
+int
+fileioctl(struct file *f, unsigned int cmd, unsigned long arg)
+{
+  int ret = 0;
+
+  if(f->type == FD_DEVICE){
+    if(f->major < 0 || f->major >= NDEV || !devsw[f->major].ioctl)
+      return -1;
+    ret = devsw[f->major].ioctl(1, cmd, arg);
+  }
+
+  return ret;
+}
+
