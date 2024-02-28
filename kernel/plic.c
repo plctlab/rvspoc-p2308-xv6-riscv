@@ -22,6 +22,7 @@ plicinit(void)
   // *(uint32*)(PLIC + I2C2_IRQ*4) = 1;
   // *(uint32*)(PLIC + I2C3_IRQ*4) = 1;
   // *(uint32*)(PLIC + I2C4_IRQ*4) = 1;
+  *(uint32*)(PLIC + ADC0_IRQ*4) = 1;
 }
 
 void
@@ -39,6 +40,7 @@ plicinithart(void)
                                   // (1 << (I2C2_IRQ - 32)) |
                                   // (1 << (I2C3_IRQ - 32)) |
                                   // (1 << (I2C4_IRQ - 32));
+  *(uint32*)PLIC_SENABLE3(hart) = 1 << (ADC0_IRQ - 96);
 
   // set this hart's S-mode priority threshold to 0.
   *(uint32*)PLIC_SPRIORITY(hart) = 0;

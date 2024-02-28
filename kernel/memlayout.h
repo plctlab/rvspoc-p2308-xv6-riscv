@@ -50,6 +50,9 @@
 #define UART0_IRQ 44
 #define UART4_IRQ 48
 
+#define ADC0  0x030F0000L
+#define ADC0_IRQ 100
+
 // virtio mmio interface
 // #define VIRTIO0 0x10001000
 // #define VIRTIO0_IRQ 1
@@ -66,6 +69,8 @@
 #define PLIC_MENABLE(hart) (PLIC + 0x2000 + (hart)*0x100)
 #define PLIC_SENABLE0(hart) (PLIC + 0x2080 + (hart)*0x100)
 #define PLIC_SENABLE1(hart) (PLIC + 0x2084 + (hart)*0x100)
+#define PLIC_SENABLE2(hart) (PLIC + 0x2088 + (hart)*0x100)
+#define PLIC_SENABLE3(hart) (PLIC + 0x208c + (hart)*0x100)
 #define PLIC_MPRIORITY(hart) (PLIC + 0x200000 + (hart)*0x2000)
 #define PLIC_SPRIORITY(hart) (PLIC + 0x201000 + (hart)*0x2000)
 #define PLIC_MCLAIM(hart) (PLIC + 0x200004 + (hart)*0x2000)

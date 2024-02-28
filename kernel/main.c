@@ -26,6 +26,8 @@ main()
     printf("fpll_csr:      %x %p\n", *reg, *reg);
     reg = (volatile uint32*) 0x03002940;
     printf("pll_g6_ssc_syn_ctrl: %x %p\n", *reg, *reg);
+    reg = (volatile uint32*) 0x03002000;
+    printf("clk_en_0:      %x %p\n", *reg, *reg);
     reg = (volatile uint32*) 0x03002004;
     printf("clk_en_1:      %x %p\n", *reg, *reg);
     reg = (volatile uint32*) 0x03002008;
@@ -67,6 +69,8 @@ main()
     printf("Initialized i2c controller\n");
     uartdev_init();
     printf("Initialized uart controller\n");
+    adcdev_init();
+    printf("Initialized adc controller\n");
     userinit();      // first user process
     __sync_synchronize();
     started = 1;

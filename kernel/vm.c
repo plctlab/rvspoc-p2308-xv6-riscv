@@ -38,6 +38,9 @@ kvmmake(void)
   // kvmmap(kpgtbl, I2C3, I2C3, PGSIZE, PTE_R | PTE_W);
   // kvmmap(kpgtbl, I2C4, I2C4, PGSIZE, PTE_R | PTE_W);
 
+  // adc registers
+  kvmmap(kpgtbl, ADC0, ADC0, PGSIZE, PTE_R | PTE_W);
+
   // PLIC
   kvmmap(kpgtbl, PLIC, PLIC, 0x400000, PTE_R | PTE_W);
 

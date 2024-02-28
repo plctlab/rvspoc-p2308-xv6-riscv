@@ -33,6 +33,10 @@ void            i2c_dw_close(void);
 // uart_dev.c
 void            uartdev_init(void);
 
+// adc_dev.c
+void            adcdev_init(void);
+void            adcdev_intr(void);
+
 // exec.c
 int             exec(char*, char**);
 
