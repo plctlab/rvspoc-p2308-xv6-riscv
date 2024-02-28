@@ -12,7 +12,7 @@ int main(void)
 
     if (fd < 0) {
         mknod("adc", ADC, 0);
-        fd = open("adc", O_RDWR);
+        fd = open("adc", O_RDONLY);
     }
 
     printf("open adc success!\n");

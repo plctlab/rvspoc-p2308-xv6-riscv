@@ -34,12 +34,16 @@ main()
     printf("clk_en_2:      %x %p\n", *reg, *reg);
     reg = (volatile uint32*) 0x0300200c;
     printf("clk_en_3:      %x %p\n", *reg, *reg);
+    reg = (volatile uint32*) 0x03002010;
+    printf("clk_en_4:      %x %p\n", *reg, *reg);
     reg = (volatile uint32*) 0x03002030;
     printf("clk_byp_0:     %x %p\n", *reg, *reg);
     reg = (volatile uint32*) 0x030020bc;
     printf("div_clk_axi6:  %x %p\n", *reg, *reg);
     reg = (volatile uint32*) 0x03002104;
     printf("div_clk_i2c:   %x %p\n", *reg, *reg);
+    reg = (volatile uint32*) 0x03002120;
+    printf("div_clk_pwm_src_0: %x %p\n", *reg, *reg);
     printf("\n");
 
     kinit();         // physical page allocator
@@ -71,6 +75,8 @@ main()
     printf("Initialized uart controller\n");
     adcdev_init();
     printf("Initialized adc controller\n");
+    pwmdev_init();
+    printf("Initialized pwm controller\n");
     userinit();      // first user process
     __sync_synchronize();
     started = 1;

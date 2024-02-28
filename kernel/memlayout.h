@@ -53,6 +53,8 @@
 #define ADC0  0x030F0000L
 #define ADC0_IRQ 100
 
+#define PWM1  0x03061000L
+
 // virtio mmio interface
 // #define VIRTIO0 0x10001000
 // #define VIRTIO0_IRQ 1

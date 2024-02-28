@@ -44,3 +44,4 @@ extern struct devsw devsw[];
 #define I2C     2
 #define UART    3
 #define ADC     4
+#define PWM     5

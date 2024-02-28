@@ -37,6 +37,9 @@ void            uartdev_init(void);
 void            adcdev_init(void);
 void            adcdev_intr(void);
 
+// pwm_dev.c
+void            pwmdev_init(void);
+
 // exec.c
 int             exec(char*, char**);
 

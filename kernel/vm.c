@@ -41,6 +41,9 @@ kvmmake(void)
   // adc registers
   kvmmap(kpgtbl, ADC0, ADC0, PGSIZE, PTE_R | PTE_W);
 
+  // pwm registers
+  kvmmap(kpgtbl, PWM1, PWM1, PGSIZE, PTE_R | PTE_W);
+
   // PLIC
   kvmmap(kpgtbl, PLIC, PLIC, 0x400000, PTE_R | PTE_W);
 
