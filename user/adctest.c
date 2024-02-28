@@ -8,7 +8,7 @@
 
 int main(void)
 {
-    int fd = open("adc", O_RDWR);
+    int fd = open("adc", O_RDONLY);
 
     if (fd < 0) {
         mknod("adc", ADC, 0);
