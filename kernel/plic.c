@@ -15,6 +15,7 @@ plicinit(void)
   *(uint32*)PLIC_CTRL = 1;
   // set desired IRQ priorities non-zero (otherwise disabled).
   *(uint32*)(PLIC + UART0_IRQ*4) = 1;
+  *(uint32*)(PLIC + UART4_IRQ*4) = 1;
   // *(uint32*)(PLIC + VIRTIO0_IRQ*4) = 1;
   // *(uint32*)(PLIC + I2C0_IRQ*4) = 1;
   *(uint32*)(PLIC + I2C1_IRQ*4) = 1;
@@ -32,6 +33,7 @@ plicinithart(void)
   // for the uart and virtio disk.
   // *(uint32*)PLIC_SENABLE(hart) = (1 << UART0_IRQ) | (1 << VIRTIO0_IRQ);
   *(uint32*)PLIC_SENABLE1(hart) = (1 << (UART0_IRQ - 32)) |
+                                  (1 << (UART4_IRQ - 32)) |
                                   (1 << (I2C1_IRQ - 32));
                                   // (1 << (I2C0_IRQ - 32)) |
                                   // (1 << (I2C2_IRQ - 32)) |

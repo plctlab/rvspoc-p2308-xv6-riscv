@@ -43,8 +43,11 @@
 
 // qemu puts UART registers here in physical memory.
 #define UART0 0x04140000L
-#define UART0_IRQ 44
+#define UART1 0x04150000L
+#define UART2 0x04160000L
+#define UART3 0x04170000L
 #define UART4 0x041C0000L
+#define UART0_IRQ 44
 #define UART4_IRQ 48
 
 // virtio mmio interface

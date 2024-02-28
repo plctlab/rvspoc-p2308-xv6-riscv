@@ -65,6 +65,8 @@ main()
     printf("Initialized disk\n");
     i2cdev_init();
     printf("Initialized i2c controller\n");
+    uartdev_init();
+    printf("Initialized uart controller\n");
     userinit();      // first user process
     __sync_synchronize();
     started = 1;

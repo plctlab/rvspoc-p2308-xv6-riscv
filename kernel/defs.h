@@ -30,6 +30,9 @@ struct i2c_adapter* i2c_dw_init(short minor);
 void            i2c_dw_intr(void);
 void            i2c_dw_close(void);
 
+// uart_dev.c
+void            uartdev_init(void);
+
 // exec.c
 int             exec(char*, char**);
 
