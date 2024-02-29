@@ -45,3 +45,4 @@ extern struct devsw devsw[];
 #define UART    3
 #define ADC     4
 #define PWM     5
+#define GPIO    6

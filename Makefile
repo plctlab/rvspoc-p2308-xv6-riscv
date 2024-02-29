@@ -33,7 +33,8 @@ OBJS = \
   $K/i2c_dev.o \
   $K/uart_dev.o \
   $K/adc_dev.o \
-  $K/pwm_dev.o
+  $K/pwm_dev.o \
+  $K/gpio_dev.o
 
 # riscv64-unknown-elf- or riscv64-linux-gnu-
 # perhaps in /opt/riscv/bin
@@ -144,6 +145,7 @@ UPROGS=\
 	$U/_uarttest\
 	$U/_adctest\
 	$U/_pwmtest\
+	$U/_gpiotest\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

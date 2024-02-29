@@ -44,6 +44,12 @@ kvmmake(void)
   // pwm registers
   kvmmap(kpgtbl, PWM1, PWM1, PGSIZE, PTE_R | PTE_W);
 
+  // gpio registers
+  kvmmap(kpgtbl, GPIO0, GPIO0, PGSIZE, PTE_R | PTE_W);
+  kvmmap(kpgtbl, GPIO1, GPIO1, PGSIZE, PTE_R | PTE_W);
+  kvmmap(kpgtbl, GPIO2, GPIO2, PGSIZE, PTE_R | PTE_W);
+  kvmmap(kpgtbl, GPIO3, GPIO3, PGSIZE, PTE_R | PTE_W);
+
   // PLIC
   kvmmap(kpgtbl, PLIC, PLIC, 0x400000, PTE_R | PTE_W);
 

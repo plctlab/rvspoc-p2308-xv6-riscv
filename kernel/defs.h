@@ -40,6 +40,9 @@ void            adcdev_intr(void);
 // pwm_dev.c
 void            pwmdev_init(void);
 
+// gpio_dev.c
+void            gpiodev_init(void);
+
 // exec.c
 int             exec(char*, char**);
 

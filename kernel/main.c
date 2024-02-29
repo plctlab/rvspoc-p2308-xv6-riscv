@@ -20,30 +20,45 @@ main()
     printf("\n");
     volatile uint32* reg = (volatile uint32*) 0x03002900;
     printf("pll_g6_ctrl:   %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x03002904;
     printf("pll_g6_status: %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x03002910;
     printf("fpll_csr:      %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x03002940;
     printf("pll_g6_ssc_syn_ctrl: %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x03002000;
     printf("clk_en_0:      %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x03002004;
     printf("clk_en_1:      %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x03002008;
     printf("clk_en_2:      %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x0300200c;
     printf("clk_en_3:      %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x03002010;
     printf("clk_en_4:      %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x03002030;
     printf("clk_byp_0:     %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x030020bc;
     printf("div_clk_axi6:  %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x03002104;
     printf("div_clk_i2c:   %x %p\n", *reg, *reg);
+
     reg = (volatile uint32*) 0x03002120;
     printf("div_clk_pwm_src_0: %x %p\n", *reg, *reg);
+
+    reg = (volatile uint32*) 0x03002094;
+    printf("div_clk_gpio_db: %x %p\n", *reg, *reg);
     printf("\n");
 
     kinit();         // physical page allocator
@@ -77,6 +92,8 @@ main()
     printf("Initialized adc controller\n");
     pwmdev_init();
     printf("Initialized pwm controller\n");
+    gpiodev_init();
+    printf("Initialized gpio controller\n");
     userinit();      // first user process
     __sync_synchronize();
     started = 1;

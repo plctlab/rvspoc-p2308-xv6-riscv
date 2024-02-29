@@ -55,6 +55,11 @@
 
 #define PWM1  0x03061000L
 
+#define GPIO0 0x03020000
+#define GPIO1 0x03021000
+#define GPIO2 0x03022000
+#define GPIO3 0x03023000
+
 // virtio mmio interface
 // #define VIRTIO0 0x10001000
 // #define VIRTIO0_IRQ 1
