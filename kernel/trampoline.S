@@ -98,6 +98,7 @@ uservec:
         jr t0
 
 .globl userret
+.balign 4
 userret:
         # userret(pagetable)
         # called by usertrapret() in trap.c to

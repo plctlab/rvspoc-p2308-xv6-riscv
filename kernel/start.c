@@ -10,16 +10,19 @@ void timerinit();
 // entry.S needs one stack per CPU.
 __attribute__ ((aligned (16))) char stack0[4096 * NCPU];
 
+#ifdef CONFIG_RISCV_M_MODE
 // a scratch area per CPU for machine-mode timer interrupts.
 uint64 timer_scratch[NCPU][5];
+#endif
 
 // assembly code in kernelvec.S for machine-mode timer interrupt.
 extern void timervec();
 
-// entry.S jumps here in machine mode on stack0.
+// entry.S jumps here in supervisor/machine mode on stack0.
 void
-start()
+start(unsigned long hartid, unsigned long fdt)
 {
+#ifdef CONFIG_RISCV_M_MODE
   // set M Previous Privilege mode to Supervisor, for mret.
   unsigned long x = r_mstatus();
   x &= ~MSTATUS_MPP_MASK;
@@ -29,15 +32,21 @@ start()
   // set M Exception Program Counter to main, for mret.
   // requires gcc -mcmodel=medany
   w_mepc((uint64)main);
+#endif
 
   // disable paging for now.
   w_satp(0);
+  sfence_vma();
 
-  // delegate all interrupts and exceptions to supervisor mode.
+#ifdef CONFIG_RISCV_M_MODE
+  // delegate all exceptions to supervisor mode.
   w_medeleg(0xffff);
-  w_mideleg(0xffff);
+  // delegate supervisor interrupts to supervisor mode.
+  w_mideleg(0x222);
+#endif
   w_sie(r_sie() | SIE_SEIE | SIE_STIE | SIE_SSIE);
 
+#ifdef CONFIG_RISCV_M_MODE
   // configure Physical Memory Protection to give supervisor mode
   // access to all of physical memory.
   w_pmpaddr0(0x3fffffffffffffull);
@@ -52,6 +61,9 @@ start()
 
   // switch to supervisor mode and jump to main().
   asm volatile("mret");
+#endif
+  w_tp(hartid);
+  main();
 }
 
 // arrange to receive timer interrupts.
@@ -59,6 +71,7 @@ start()
 // at timervec in kernelvec.S,
 // which turns them into software interrupts for
 // devintr() in trap.c.
+#ifdef CONFIG_RISCV_M_MODE
 void
 timerinit()
 {
@@ -87,3 +100,4 @@ timerinit()
   // enable machine-mode timer interrupts.
   w_mie(r_mie() | MIE_MTIE);
 }
+#endif

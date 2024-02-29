@@ -39,7 +39,7 @@ proc_mapstacks(pagetable_t kpgtbl)
     if(pa == 0)
       panic("kalloc");
     uint64 va = KSTACK((int) (p - proc));
-    kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
+    kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_NORMAL);
   }
 }
 
@@ -188,7 +188,7 @@ proc_pagetable(struct proc *p)
   // only the supervisor uses it, on the way
   // to/from user space, so not PTE_U.
   if(mappages(pagetable, TRAMPOLINE, PGSIZE,
-              (uint64)trampoline, PTE_R | PTE_X) < 0){
+              (uint64)trampoline, PTE_EXEC) < 0){
     uvmfree(pagetable, 0);
     return 0;
   }
@@ -196,7 +196,7 @@ proc_pagetable(struct proc *p)
   // map the trapframe page just below the trampoline page, for
   // trampoline.S.
   if(mappages(pagetable, TRAPFRAME, PGSIZE,
-              (uint64)(p->trapframe), PTE_R | PTE_W) < 0){
+              (uint64)(p->trapframe), PTE_NORMAL) < 0){
     uvmunmap(pagetable, TRAMPOLINE, 1, 0);
     uvmfree(pagetable, 0);
     return 0;
@@ -446,11 +446,13 @@ scheduler(void)
 {
   struct proc *p;
   struct cpu *c = mycpu();
+  int found;
   
   c->proc = 0;
   for(;;){
     // Avoid deadlock by ensuring that devices can interrupt.
     intr_on();
+    found = 0;
 
     for(p = proc; p < &proc[NPROC]; p++) {
       acquire(&p->lock);
@@ -458,6 +460,7 @@ scheduler(void)
         // Switch to chosen process.  It is the process's job
         // to release its lock and then reacquire it
         // before jumping back to us.
+        found = 1;
         p->state = RUNNING;
         c->proc = p;
         swtch(&c->context, &p->context);
@@ -467,6 +470,13 @@ scheduler(void)
         c->proc = 0;
       }
       release(&p->lock);
+    }
+
+    // Wait for interrupt if no runnable process is found.
+    // Otherwise there would be a high cpu usage.
+    if(!found) {
+      intr_on();
+      asm volatile("wfi");
     }
   }
 }
@@ -679,5 +689,15 @@ procdump(void)
       state = "???";
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
+  }
+}
+
+void
+kdelay(unsigned long n)
+{
+  uint64 t0 = r_time();
+
+  while(r_time() - t0 < n * INTERVAL){
+    asm volatile("pause");
   }
 }

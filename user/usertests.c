@@ -32,7 +32,7 @@ char buf[BUFSZ];
 void
 copyin(char *s)
 {
-  uint64 addrs[] = { 0x80000000LL, 0xffffffffffffffff };
+  uint64 addrs[] = { KERNBASE, 0xffffffffffffffff };
 
   for(int ai = 0; ai < 2; ai++){
     uint64 addr = addrs[ai];
@@ -76,7 +76,7 @@ copyin(char *s)
 void
 copyout(char *s)
 {
-  uint64 addrs[] = { 0x80000000LL, 0xffffffffffffffff };
+  uint64 addrs[] = { KERNBASE, 0xffffffffffffffff };
 
   for(int ai = 0; ai < 2; ai++){
     uint64 addr = addrs[ai];
@@ -117,7 +117,7 @@ copyout(char *s)
 void
 copyinstr1(char *s)
 {
-  uint64 addrs[] = { 0x80000000LL, 0xffffffffffffffff };
+  uint64 addrs[] = { KERNBASE, 0xffffffffffffffff };
 
   for(int ai = 0; ai < 2; ai++){
     uint64 addr = addrs[ai];
@@ -2060,7 +2060,7 @@ sbrkbasic(char *s)
 void
 sbrkmuch(char *s)
 {
-  enum { BIG=100*1024*1024 };
+  enum { BIG=50*1024*1024 };
   char *c, *oldbrk, *a, *lastaddr, *p;
   uint64 amt;
 

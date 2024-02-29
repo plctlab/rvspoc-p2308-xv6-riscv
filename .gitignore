@@ -13,5 +13,7 @@ initcode.out
 kernelmemfs
 mkfs
 kernel/kernel
+kernel/kernel.ld
+kernel/kernel.bin
 user/usys.S
 .gdbinit
