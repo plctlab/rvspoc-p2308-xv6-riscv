@@ -14,7 +14,7 @@
 
 static int debug = 0;
 
-int channel = 0;
+int channel = -1;
 struct spinlock adc_lock;
 
 int
@@ -87,7 +87,7 @@ adcdev_ioctl(int user_src, unsigned int cmd, unsigned long arg)
 int
 adcdev_close(void)
 {
-  channel = 0;
+  channel = -1;
   return 0;
 }
 

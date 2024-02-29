@@ -1,8 +1,52 @@
-# Porting Doc
+# 移植文档
 
-## Drivers
+## 驱动
 
-### I2C
+- i2c
+
+  SOC 提供了 5 个 i2c controller，开发板从 controller 0、1、3 引出引脚。
+
+  驱动支持每次控制 i2c 0、1、2、3、4 中的任意 1 个，ioctl 配置 slave 地址，并 read write 值。
+
+  为了演示方便，测试示例只驱动 i2c 1。
+
+- uart
+
+  SOC 提供了 5 个 uart controller，开发板对 5 个 controller 都提供引脚。
+
+  uart 0 与 console 相连，不被驱动。
+
+  驱动支持每次控制 uart 1、2、3、4 中的任意 1 个，ioctl 配置 uart 参数，并 read write 值。
+
+  为了演示方便，测试示例只驱动 uart 4。
+
+- adc
+
+  SOC 提供了 1 个 adc controller，开发板从这个 controller 引出引脚。
+
+  驱动支持每次控制这个 controller 的任意 1 个 channel，并 read 值。
+
+  为了演示方便，测试示例只驱动 channel 1。
+
+- pwm
+
+  SOC 提供了 4 个 pwm controller，开发板从 controller 1 和 2 引出引脚。
+
+  驱动支持每次控制 controller 1 和 2 中 1 个 controller 的任意 1 个 channel，ioctl 配置并使能 channel。//TODO
+
+  为了演示方便，测试示例只驱动 pwm5（pwm 1 的 channel 1）。
+
+- gpio
+
+  SOC 提供了 4 个 gpio controller，开发板从 4 个 controller 都有引出 gpio 引脚。
+
+  驱动支持每次控制任意 1 个 controller 的任意 1 个 channel，ioctl 配置为输入或输出，并 read 或 write 值。
+
+  为了演示方便，测试示例只驱动开发板上的 GP0（gpio 0 的 channel 28）和 GP25（gpio 2 的 channel 24）。
+
+### Implementation Notes
+
+#### I2C
 
 - read(fd, val, 2)
 
