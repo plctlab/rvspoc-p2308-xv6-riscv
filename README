@@ -1,3 +1,82 @@
+# xv6 ports to real riscv platforms
+port xv6 to Sophgo CV1800B platforms such as Milkv Duo, Sophgo SG00X platforms
+such as Milkv-duo256, milkv Duo-S and T-HEAD TH1520 platforms such as Sipeed
+Lichee Pi 4A. While Milkv Duo holds the highest priority porting effort.
+
+Currently, peripherals such as uart, gpio, adc, pwm, i2c and spi are well
+supported for milkv duo. Qemu and TH1520 only support uart. I also wrote
+some userspace tools to demo the peripherals usage. Check below.
+
+## Build for milkv duo:
+./build_for_milkv_duo.sh
+
+the built img will be duo-imgtools/milkv-duo_sdcard.img, then burn it
+to tf card on PC:
+dd if=milkv-duo_sdcard.img of=/dev/sdX  (take care "sdX" must be the
+tfcard appeared on your PC, you have been warned!)
+
+*gpio demo:
+$ ./blink 5   //will link 5 loops
+
+*adc demo:
+ADC1 is used. Connect GP26 to GND
+$ ./adc
+$ adc raw: 0
+
+then connect GP26 to 3v3(out).
+$ ./adc
+$ adc raw: 4095
+
+*pwm demo:
+PWM6 is used for demo. Connect a Light Emitting Diode(don't forget
+proper resistance, I use a 100 ohm) to GP5, another peer connects to GND.
+$ ./pwm 1000000 900000
+$ ./pwm 1000000 800000
+$ ./pwm 1000000 600000
+$ ./pwm 1000000 500000
+$ ./pwm 1000000 300000
+$ ./pwm 1000000 200000
+$ ./pwm 1000000 100000
+and so on. The Diode light changes each time you modify the duty cycles...
+
+*i2c demo:
+I2C0 is used for demo. I used max30102 sensor for demo. If you use different
+I2C device, check the device manual for read and write details.
+Connect GP0 to its SCL pin and GP1 to its SDA pin, don't forget GND and
+VCC(connect to 3V3(out)
+$ ./i2c 0x57 0xff
+$ 0x15
+$ ./i2c 0x57 0x21 1
+$ ./i2c 0x57 0x1f
+0xF
+$ ./i2c 0x57 0x20
+0x3
+The integer temperature is 15, frac temperature is 0x3, so the tempearture
+is about 15.19 centigrade. (plz check max30102 TRM for details)
+
+*spi demo:
+SPI2 is used for demo. I will demo external spi loop back test, this is
+simliar as the spidev_test under linux. The demo will print the received
+contents.
+$ ./spi
+$ 0 0 0 0 0 0 0 0 ...
+Then connect GP7 and GP8
+$ ./spi
+$ 1 2 3 4 5 6 7 8 ...
+
+## Build for qemu:
+git checkout kernel/config.h
+make
+make kernel/kernel.bin
+
+## Build for TH1520:
+cp kernel/config.h.th1520 kernel/config.h
+make
+make kernel/kernel.bin
+
+Build for SG200X:
+Just replace the fip.bin then build as milkv duo ;)
+
 xv6 is a re-implementation of Dennis Ritchie's and Ken Thompson's Unix
 Version 6 (v6).  xv6 loosely follows the structure and style of v6,
 but is implemented for a modern RISC-V multiprocessor using ANSI C.

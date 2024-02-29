@@ -87,6 +87,7 @@ kernelvec:
         # return to whatever we were doing in the kernel.
         sret
 
+#ifdef CONFIG_RISCV_M_MODE
         #
         # machine-mode timer interrupt.
         #
@@ -122,3 +123,4 @@ timervec:
         csrrw a0, mscratch, a0
 
         mret
+#endif

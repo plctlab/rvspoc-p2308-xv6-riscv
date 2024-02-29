@@ -330,6 +330,53 @@ sfence_vma()
 typedef uint64 pte_t;
 typedef uint64 *pagetable_t; // 512 PTEs
 
+#define CSR_TIME		0xc01
+#define CSR_IE			0x104
+
+#ifdef __ASSEMBLY__
+#define __ASM_STR(x)    x
+#else
+#define __ASM_STR(x)    #x
+#endif
+
+#define csr_read(csr)                                           \
+	({                                                      \
+		register unsigned long __v;                     \
+		__asm__ __volatile__("csrr %0, " __ASM_STR(csr) \
+				     : "=r"(__v)                \
+				     :                          \
+				     : "memory");               \
+		__v;                                            \
+	})
+
+#define csr_write(csr, val)                                        \
+	({                                                         \
+		unsigned long __v = (unsigned long)(val);          \
+		__asm__ __volatile__("csrw " __ASM_STR(csr) ", %0" \
+				     :                             \
+				     : "rK"(__v)                   \
+				     : "memory");                  \
+	})
+
+#define csr_clear(csr, val)                                        \
+	({                                                         \
+		unsigned long __v = (unsigned long)(val);          \
+		__asm__ __volatile__("csrc " __ASM_STR(csr) ", %0" \
+				     :                             \
+				     : "rK"(__v)                   \
+				     : "memory");                  \
+	})
+
+#define csr_set(csr, val)                                          \
+	({                                                         \
+		unsigned long __v = (unsigned long)(val);          \
+		__asm__ __volatile__("csrs " __ASM_STR(csr) ", %0" \
+				     :                             \
+				     : "rK"(__v)                   \
+				     : "memory");                  \
+	})
+
+
 #endif // __ASSEMBLER__
 
 #define PGSIZE 4096 // bytes per page
@@ -343,13 +390,15 @@ typedef uint64 *pagetable_t; // 512 PTEs
 #define PTE_W (1L << 2)
 #define PTE_X (1L << 3)
 #define PTE_U (1L << 4) // user can access
+#define PTE_A (1L << 6)
+#define PTE_D (1L << 7)
 
 // shift a physical address to the right place for a PTE.
 #define PA2PTE(pa) ((((uint64)pa) >> 12) << 10)
 
-#define PTE2PA(pte) (((pte) >> 10) << 12)
+#define PTE2PA(pte) (((pte & ~((1UL << 63) | (1UL << 62) | (1UL << 61) | (1UL << 60) | (1UL << 59))) >> 10) << 12)
 
-#define PTE_FLAGS(pte) ((pte) & 0x3FF)
+#define PTE_FLAGS(pte) ((pte) & (0x3FF | (1UL << 63)|(1UL << 62) | (1UL << 61) | (1UL << 60) | (1UL << 59)))
 
 // extract the three 9-bit page table indices from a virtual address.
 #define PXMASK          0x1FF // 9 bits
@@ -361,3 +410,18 @@ typedef uint64 *pagetable_t; // 512 PTEs
 // Sv39, to avoid having to sign-extend virtual addresses
 // that have the high bit set.
 #define MAXVA (1L << (9 + 9 + 9 + 12 - 1))
+
+#define PTE_THEAD_DEVICE	((1UL << 63) | (1UL << 60))
+#define PTE_THEAD_NORMAL	((1UL << 62) | (1UL << 61) | (1UL << 60))
+
+#include "config.h"
+#ifdef THEAD_PTE
+#define PTE_DEVICE	(PTE_R | PTE_W | PTE_THEAD_DEVICE)
+#define PTE_EXEC	(PTE_R | PTE_X | PTE_THEAD_NORMAL)
+#define PTE_RO		(PTE_R | PTE_THEAD_NORMAL)
+#else
+#define PTE_DEVICE	(PTE_R | PTE_W)
+#define PTE_EXEC	(PTE_R | PTE_X)
+#define PTE_RO		(PTE_R)
+#endif
+#define PTE_NORMAL	(PTE_RO | PTE_W)

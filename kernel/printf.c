@@ -19,117 +19,219 @@ volatile int panicked = 0;
 
 // lock to avoid interleaving concurrent printf's.
 static struct {
-  struct spinlock lock;
-  int locking;
+	struct spinlock lock;
+	int locking;
 } pr;
 
-static char digits[] = "0123456789abcdef";
+#define putchar consputc
+#define get_num_va_args(_args, _lcount)				\
+	(((_lcount) > 1)  ? va_arg(_args, long long int) :	\
+	(((_lcount) == 1) ? va_arg(_args, long int) :		\
+			    va_arg(_args, int)))
 
-static void
-printint(int xx, int base, int sign)
+#define get_unum_va_args(_args, _lcount)				\
+	(((_lcount) > 1)  ? va_arg(_args, unsigned long long int) :	\
+	(((_lcount) == 1) ? va_arg(_args, unsigned long int) :		\
+			    va_arg(_args, unsigned int)))
+
+static int string_print(const char *str)
 {
-  char buf[16];
-  int i;
-  uint x;
+	int count = 0;
 
-  if(sign && (sign = xx < 0))
-    x = -xx;
-  else
-    x = xx;
+	//assert(str != NULL);
 
-  i = 0;
-  do {
-    buf[i++] = digits[x % base];
-  } while((x /= base) != 0);
+	for ( ; *str != '\0'; str++) {
+		(void)putchar(*str);
+		count++;
+	}
 
-  if(sign)
-    buf[i++] = '-';
-
-  while(--i >= 0)
-    consputc(buf[i]);
+	return count;
 }
 
-static void
-printptr(uint64 x)
+static int unsigned_num_print(unsigned long int unum, unsigned int radix,
+			      char padc, int padn)
 {
-  int i;
-  consputc('0');
-  consputc('x');
-  for (i = 0; i < (sizeof(uint64) * 2); i++, x <<= 4)
-    consputc(digits[x >> (sizeof(uint64) * 8 - 4)]);
+	/* Just need enough space to store 64 bit decimal integer */
+	char num_buf[20];
+	int i = 0, count = 0;
+	unsigned int rem;
+
+	do {
+		rem = unum % radix;
+		if (rem < 0xa)
+			num_buf[i] = '0' + rem;
+		else
+			num_buf[i] = 'a' + (rem - 0xa);
+		i++;
+		unum /= radix;
+	} while (unum > 0U);
+
+	if (padn > 0) {
+		while (i < padn) {
+			(void)putchar(padc);
+			count++;
+			padn--;
+		}
+	}
+
+	while (--i >= 0) {
+		(void)putchar(num_buf[i]);
+		count++;
+	}
+
+	return count;
 }
 
-// Print to the console. only understands %d, %x, %p, %s.
-void
-printf(char *fmt, ...)
+/*******************************************************************
+ * Reduced format print for Trusted firmware.
+ * The following type specifiers are supported by this print
+ * %x - hexadecimal format
+ * %s - string format
+ * %d or %i - signed decimal format
+ * %u - unsigned decimal format
+ * %p - pointer format
+ *
+ * The following length specifiers are supported by this print
+ * %l - long int (64-bit on AArch64)
+ * %ll - long long int (64-bit on AArch64)
+ * %z - size_t sized integer formats (64 bit on AArch64)
+ *
+ * The following padding specifiers are supported by this print
+ * %0NN - Left-pad the number with 0s (NN is a decimal number)
+ *
+ * The print exits on all other formats specifiers other than valid
+ * combinations of the above specifiers.
+ *******************************************************************/
+int vprintf(const char *fmt, va_list args)
 {
-  va_list ap;
-  int i, c, locking;
-  char *s;
+	int l_count;
+	long long int num;
+	unsigned long long int unum;
+	char *str;
+	char padc = '\0'; /* Padding character */
+	int padn; /* Number of characters to pad */
+	int count = 0; /* Number of printed characters */
 
-  locking = pr.locking;
-  if(locking)
-    acquire(&pr.lock);
+	while (*fmt != '\0') {
+		l_count = 0;
+		padn = 0;
 
-  if (fmt == 0)
-    panic("null fmt");
+		if (*fmt == '%') {
+			fmt++;
+			/* Check the format specifier */
+loop:
+			switch (*fmt) {
+			case '%':
+				(void)putchar('%');
+				break;
+			case 'i': /* Fall through to next one */
+			case 'd':
+				num = get_num_va_args(args, l_count);
+				if (num < 0) {
+					(void)putchar('-');
+					unum = (unsigned long long int)-num;
+					padn--;
+				} else
+					unum = (unsigned long long int)num;
 
-  va_start(ap, fmt);
-  for(i = 0; (c = fmt[i] & 0xff) != 0; i++){
-    if(c != '%'){
-      consputc(c);
-      continue;
-    }
-    c = fmt[++i] & 0xff;
-    if(c == 0)
-      break;
-    switch(c){
-    case 'd':
-      printint(va_arg(ap, int), 10, 1);
-      break;
-    case 'x':
-      printint(va_arg(ap, int), 16, 1);
-      break;
-    case 'p':
-      printptr(va_arg(ap, uint64));
-      break;
-    case 's':
-      if((s = va_arg(ap, char*)) == 0)
-        s = "(null)";
-      for(; *s; s++)
-        consputc(*s);
-      break;
-    case '%':
-      consputc('%');
-      break;
-    default:
-      // Print unknown % sequence to draw attention.
-      consputc('%');
-      consputc(c);
-      break;
-    }
-  }
-  va_end(ap);
+				count += unsigned_num_print(unum, 10,
+							    padc, padn);
+				break;
+			case 's':
+				str = va_arg(args, char *);
+				count += string_print(str);
+				break;
+			case 'p':
+				unum = (uintptr_t)va_arg(args, void *);
+				if (unum > 0U) {
+					count += string_print("0x");
+					padn -= 2;
+				}
 
-  if(locking)
-    release(&pr.lock);
+				count += unsigned_num_print(unum, 16,
+							    padc, padn);
+				break;
+			case 'x':
+				unum = get_unum_va_args(args, l_count);
+				count += unsigned_num_print(unum, 16,
+							    padc, padn);
+				break;
+			case 'z':
+				if (sizeof(size_t) == 8U)
+					l_count = 2;
+
+				fmt++;
+				goto loop;
+			case 'l':
+				l_count++;
+				fmt++;
+				goto loop;
+			case 'u':
+				unum = get_unum_va_args(args, l_count);
+				count += unsigned_num_print(unum, 10,
+							    padc, padn);
+				break;
+			case '0':
+				padc = '0';
+				padn = 0;
+				fmt++;
+
+				for (;;) {
+					char ch = *fmt;
+					if ((ch < '0') || (ch > '9')) {
+						goto loop;
+					}
+					padn = (padn * 10) + (ch - '0');
+					fmt++;
+				}
+				//assert(0); /* Unreachable */
+			default:
+				/* Exit on any other format specifier */
+				return -1;
+			}
+			fmt++;
+			continue;
+		}
+		(void)putchar(*fmt);
+		fmt++;
+		count++;
+	}
+
+	return count;
 }
 
-void
-panic(char *s)
+int printf(const char *fmt, ...)
 {
-  pr.locking = 0;
-  printf("panic: ");
-  printf(s);
-  printf("\n");
-  panicked = 1; // freeze uart output from other CPUs
-  for(;;)
-    ;
+	int count, locking;
+	va_list va;
+
+	locking = pr.locking;
+	if (locking)
+		acquire(&pr.lock);
+
+	va_start(va, fmt);
+	count = vprintf(fmt, va);
+	va_end(va);
+
+	if (locking)
+		release(&pr.lock);
+
+	return count;
 }
 
-void
-printfinit(void)
+void panic(char *s)
 {
-  initlock(&pr.lock, "pr");
-  pr.locking = 1;
+	pr.locking = 0;
+	printf("panic: ");
+	printf(s);
+	printf("\n");
+	panicked = 1; // freeze uart output from other CPUs
+	for(;;)
+		;
+}
+
+void printfinit(void)
+{
+	initlock(&pr.lock, "pr");
+	pr.locking = 1;
 }

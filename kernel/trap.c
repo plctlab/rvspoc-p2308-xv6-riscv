@@ -188,8 +188,8 @@ devintr()
 
     if(irq == UART0_IRQ){
       uartintr();
-    } else if(irq == VIRTIO0_IRQ){
-      virtio_disk_intr();
+    //} else if(irq == VIRTIO0_IRQ){
+    //  virtio_disk_intr();
     } else if(irq){
       printf("unexpected interrupt irq=%d\n", irq);
     }
@@ -201,19 +201,33 @@ devintr()
       plic_complete(irq);
 
     return 1;
+#ifdef CONFIG_RISCV_M_MODE
   } else if(scause == 0x8000000000000001L){
     // software interrupt from a machine-mode timer interrupt,
-    // forwarded by timervec in kernelvec.S.
+    // forwarded by OpenSBI or timervec in kernelvec.S.
 
     if(cpuid() == 0){
       clockintr();
     }
-    
+
     // acknowledge the software interrupt by clearing
     // the SSIP bit in sip.
     w_sip(r_sip() & ~2);
+    return 2;
+#else
+  } else if((scause & 0x8000000000000000L) &&
+     (scause & 0xff) == 5){
+    // S-mode timer interrupt,
+    unsigned long next;
+
+    csr_clear(CSR_IE, 1 << 5);
+    clockintr();
+    next = csr_read(CSR_TIME) + INTERVAL;
+    sbi_set_timer(next);
+    csr_set(CSR_IE, 1 << 5);
 
     return 2;
+#endif
   } else {
     return 0;
   }

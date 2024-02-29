@@ -6,6 +6,7 @@
 
 
 .globl swtch
+.balign 4
 swtch:
         sd ra, 0(a0)
         sd sp, 8(a0)

@@ -25,23 +25,63 @@ kvmmake(void)
   memset(kpgtbl, 0, PGSIZE);
 
   // uart registers
-  kvmmap(kpgtbl, UART0, UART0, PGSIZE, PTE_R | PTE_W);
+  kvmmap(kpgtbl, UART0, UART0_PHY, PGSIZE, PTE_DEVICE);
 
   // virtio mmio disk interface
-  kvmmap(kpgtbl, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);
+#ifdef VIRTIO0
+  kvmmap(kpgtbl, VIRTIO0, VIRTIO0, PGSIZE, PTE_DEVICE);
+#endif
+
+#ifdef GPIO0
+  kvmmap(kpgtbl, GPIO0, GPIO0, PGSIZE, PTE_DEVICE);
+#endif
+#ifdef GPIO1
+  kvmmap(kpgtbl, GPIO1, GPIO1, PGSIZE, PTE_DEVICE);
+#endif
+#ifdef GPIO2
+  kvmmap(kpgtbl, GPIO2, GPIO2, PGSIZE, PTE_DEVICE);
+#endif
+#ifdef GPIO3
+  kvmmap(kpgtbl, GPIO3, GPIO3, PGSIZE, PTE_DEVICE);
+#endif
+
+#ifdef PWM0
+  kvmmap(kpgtbl, PWM0, PWM0, PGSIZE, PTE_DEVICE);
+#endif
+#ifdef PWM1
+  kvmmap(kpgtbl, PWM1, PWM1, PGSIZE, PTE_DEVICE);
+#endif
+#ifdef PWM2
+  kvmmap(kpgtbl, PWM2, PWM2, PGSIZE, PTE_DEVICE);
+#endif
+#ifdef PWM3
+  kvmmap(kpgtbl, PWM3, PWM3, PGSIZE, PTE_DEVICE);
+#endif
+
+#ifdef ADC0
+  kvmmap(kpgtbl, ADC0, ADC0, PGSIZE, PTE_DEVICE);
+#endif
+
+#ifdef I2C0
+  kvmmap(kpgtbl, I2C0, I2C0, PGSIZE, PTE_DEVICE);
+#endif
+
+#ifdef SPI0
+  kvmmap(kpgtbl, SPI0, SPI0, PGSIZE, PTE_DEVICE);
+#endif
 
   // PLIC
-  kvmmap(kpgtbl, PLIC, PLIC, 0x400000, PTE_R | PTE_W);
+  kvmmap(kpgtbl, PLIC, PLIC_PHY, 0x400000, PTE_DEVICE);
 
   // map kernel text executable and read-only.
-  kvmmap(kpgtbl, KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_R | PTE_X);
+  kvmmap(kpgtbl, KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_EXEC);
 
   // map kernel data and the physical RAM we'll make use of.
-  kvmmap(kpgtbl, (uint64)etext, (uint64)etext, PHYSTOP-(uint64)etext, PTE_R | PTE_W);
+  kvmmap(kpgtbl, (uint64)etext, (uint64)etext, PHYSTOP-(uint64)etext, PTE_NORMAL);
 
   // map the trampoline for trap entry/exit to
   // the highest virtual address in the kernel.
-  kvmmap(kpgtbl, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);
+  kvmmap(kpgtbl, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_EXEC);
 
   // allocate and map a kernel stack for each process.
   proc_mapstacks(kpgtbl);
@@ -62,6 +102,7 @@ void
 kvminithart()
 {
   // wait for any previous writes to the page table memory to finish.
+  asm volatile("fence rw, rw");
   sfence_vma();
 
   w_satp(MAKE_SATP(kernel_pagetable));
@@ -129,7 +170,7 @@ walkaddr(pagetable_t pagetable, uint64 va)
 // only used when booting.
 // does not flush TLB or enable paging.
 void
-kvmmap(pagetable_t kpgtbl, uint64 va, uint64 pa, uint64 sz, int perm)
+kvmmap(pagetable_t kpgtbl, uint64 va, uint64 pa, uint64 sz, uint64 perm)
 {
   if(mappages(kpgtbl, va, sz, pa, perm) != 0)
     panic("kvmmap");
@@ -140,7 +181,7 @@ kvmmap(pagetable_t kpgtbl, uint64 va, uint64 pa, uint64 sz, int perm)
 // be page-aligned. Returns 0 on success, -1 if walk() couldn't
 // allocate a needed page-table page.
 int
-mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
+mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, uint64 perm)
 {
   uint64 a, last;
   pte_t *pte;
@@ -155,12 +196,13 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
       return -1;
     if(*pte & PTE_V)
       panic("mappages: remap");
-    *pte = PA2PTE(pa) | perm | PTE_V;
+    *pte = PA2PTE(pa) | perm | PTE_V | PTE_A | PTE_D;
     if(a == last)
       break;
     a += PGSIZE;
     pa += PGSIZE;
   }
+  sfence_vma();
   return 0;
 }
 
@@ -181,7 +223,7 @@ uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
       panic("uvmunmap: walk");
     if((*pte & PTE_V) == 0)
       panic("uvmunmap: not mapped");
-    if(PTE_FLAGS(*pte) == PTE_V)
+    if((PTE_FLAGS(*pte) & 0x3ff) == PTE_V)
       panic("uvmunmap: not a leaf");
     if(do_free){
       uint64 pa = PTE2PA(*pte);
@@ -189,6 +231,7 @@ uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
     }
     *pte = 0;
   }
+  sfence_vma();
 }
 
 // create an empty user page table.
@@ -216,7 +259,7 @@ uvmfirst(pagetable_t pagetable, uchar *src, uint sz)
     panic("uvmfirst: more than a page");
   mem = kalloc();
   memset(mem, 0, PGSIZE);
-  mappages(pagetable, 0, PGSIZE, (uint64)mem, PTE_W|PTE_R|PTE_X|PTE_U);
+  mappages(pagetable, 0, PGSIZE, (uint64)mem, PTE_NORMAL|PTE_X|PTE_U);
   memmove(mem, src, sz);
 }
 
@@ -239,7 +282,7 @@ uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
       return 0;
     }
     memset(mem, 0, PGSIZE);
-    if(mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_R|PTE_U|xperm) != 0){
+    if(mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_RO|PTE_U|xperm) != 0){
       kfree(mem);
       uvmdealloc(pagetable, a, oldsz);
       return 0;
@@ -307,7 +350,7 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
 {
   pte_t *pte;
   uint64 pa, i;
-  uint flags;
+  uint64 flags;
   char *mem;
 
   for(i = 0; i < sz; i += PGSIZE){
@@ -325,6 +368,9 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
       goto err;
     }
   }
+  // Synchronize the instruction and data streams,
+  // since we may copy pages with instructions.
+  asm volatile("fence.i");
   return 0;
 
  err:
