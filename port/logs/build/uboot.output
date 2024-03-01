@@ -1,0 +1,440 @@
+  [TARGET] /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd/.config
+echo "u-boot's defconfig is updated. Use it."
+u-boot's defconfig is updated. Use it.
+mkdir -p /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd/
+cmp -s /home/juhan/local/duo-buildroot-sdk/build/boards/cv180x/cv1800b_milkv_duo_sd/u-boot/cvitek_cv1800b_milkv_duo_sd_defconfig /home/juhan/local/
+duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd/.config || \                                                                                   cp -vb /home/juhan/local/duo-buildroot-sdk/build/boards/cv180x/cv1800b_milkv_duo_sd/u-boot/cvitek_cv1800b_milkv_duo_sd_defconfig /home/juha
+n/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd/.config                                                                        '/home/juhan/local/duo-buildroot-sdk/build/boards/cv180x/cv1800b_milkv_duo_sd/u-boot/cvitek_cv1800b_milkv_duo_sd_defconfig' -> '/home/juhan/local/d
+uo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd/.config'                                                                                sed -i "s/CONFIG_BOOTLOGO=y/CONFIG_BOOTLOGO=n/g" /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd/.config
+  [TARGET] u-boot-dts
+find /home/juhan/local/duo-buildroot-sdk/build/boards/cv180x \
+        \( -path "*linux/*.dts*" -o -path "*dts_riscv/*.dts*" \) \
+        -exec cp {} /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/arch/riscv/dts/ \;
+find /home/juhan/local/duo-buildroot-sdk/build/boards/default/dts/cv180x /home/juhan/local/duo-buildroot-sdk/build/boards/default/dts/cv180x_riscv
+-name *.dts* -exec cp {} /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/arch/riscv/dts/ \;                                                       [TARGET] u-boot-build
+ln -snrf /home/juhan/local/duo-buildroot-sdk/build/output/cv1800b_milkv_duo_sd/cvi_board_memmap.h /home/juhan/local/duo-buildroot-sdk/u-boot-2021.1
+0/include/                                                                                                                                         rm -f /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/board/cvitek/cvi_board_init.c
+ln -s /home/juhan/local/duo-buildroot-sdk/build/boards/cv180x/cv1800b_milkv_duo_sd/u-boot/cvi_board_init.c /home/juhan/local/duo-buildroot-sdk/u-bo
+ot-2021.10/board/cvitek/cvi_board_init.c                                                                                                           rm -f /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/include/cvitek/cvitek.h
+ln -s /home/juhan/local/duo-buildroot-sdk/build/boards/cv180x/cv1800b_milkv_duo_sd/u-boot/cvitek.h /home/juhan/local/duo-buildroot-sdk/u-boot-2021.
+10/include/cvitek/cvitek.h                                                                                                                         make -j4 -C /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10 olddefconfig
+make[1]: 进入目录“/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10”
+make[2]: 进入目录“/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd”
+  HOSTCC  scripts/basic/fixdep
+  GEN     Makefile
+  HOSTCC  scripts/kconfig/conf.o
+  YACC    scripts/kconfig/zconf.tab.c
+  LEX     scripts/kconfig/zconf.lex.c
+  HOSTCC  scripts/kconfig/zconf.tab.o
+  HOSTLD  scripts/kconfig/conf
+/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/scripts/kconfig/Makefile:105: *** No configuration exists for this target on this architecture。
+ 停止。                                                                                                                                            scripts/kconfig/conf  --olddefconfig Kconfig
+arch/arm/mach-imx/mx7/Kconfig:22:warning: config symbol defined without type
+arch/arm/mach-socfpga/Kconfig:24:warning: config symbol defined without type
+arch/x86/Kconfig:949:warning: 'X86_OFFSET_SPL': number is invalid
+common/spl/Kconfig:924:warning: config symbol defined without type
+#
+# configuration written to .config
+#
+make[2]: 离开目录“/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd”
+make[1]: 离开目录“/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10”
+make -j4 -C /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10 all
+make[1]: 进入目录“/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10”
+make[2]: 进入目录“/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd”
+  GEN     Makefile
+/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/scripts/kconfig/Makefile:105: *** No configuration exists for this target on this architecture。
+ 停止。                                                                                                                                            scripts/kconfig/conf  --syncconfig Kconfig
+arch/arm/mach-imx/mx7/Kconfig:22:warning: config symbol defined without type
+arch/arm/mach-socfpga/Kconfig:24:warning: config symbol defined without type
+arch/x86/Kconfig:949:warning: 'X86_OFFSET_SPL': number is invalid
+common/spl/Kconfig:924:warning: config symbol defined without type
+  UPD     include/config.h
+  CFG     u-boot.cfg
+  GEN     include/autoconf.mk.dep
+  GEN     include/autoconf.mk
+  GEN     Makefile
+  CFGCHK  u-boot.cfg
+  UPD     include/generated/timestamp_autogenerated.h
+  UPD     include/generated/dt.h
+  UPD     include/config/uboot.release
+  Using /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10 as source for U-Boot
+  HOSTCC  scripts/dtc/dtc.o
+  HOSTCC  scripts/dtc/flattree.o
+  UPD     include/generated/version_autogenerated.h
+  HOSTCC  scripts/dtc/fstree.o
+  HOSTCC  scripts/dtc/data.o
+  HOSTCC  scripts/dtc/livetree.o
+  HOSTCC  scripts/dtc/treesource.o
+  HOSTCC  scripts/dtc/srcpos.o
+  HOSTCC  scripts/dtc/checks.o
+  HOSTCC  scripts/dtc/util.o
+  LEX     scripts/dtc/dtc-lexer.lex.c
+  YACC    scripts/dtc/dtc-parser.tab.h
+  YACC    scripts/dtc/dtc-parser.tab.c
+  HOSTCC  scripts/dtc/dtc-lexer.lex.o
+  HOSTCC  scripts/dtc/dtc-parser.tab.o
+  CC      lib/asm-offsets.s
+  CC      arch/riscv/lib/asm-offsets.s
+  HOSTLD  scripts/dtc/dtc
+  UPD     include/generated/asm-offsets.h
+  UPD     include/generated/generic-asm-offsets.h
+  LDS     u-boot.lds
+  LDS     u-boot-elf.lds
+  HOSTCC  tools/gen_eth_addr
+  HOSTCC  tools/gen_ethaddr_crc.o
+  WRAP    tools/lib/crc8.c
+  HOSTCC  tools/mkenvimage.o
+  HOSTCC  tools/os_support.o
+  WRAP    tools/lib/crc32.c
+  HOSTCC  tools/aisimage.o
+  HOSTCC  tools/atmelimage.o
+  HOSTCC  tools/fit_common.o
+  HOSTCC  tools/fit_image.o
+  HOSTCC  tools/image-host.o
+  WRAP    tools/common/image-fit.c
+  WRAP    tools/common/fdt_region.c
+  WRAP    tools/common/bootm.c
+  HOSTCC  tools/lib/crc32.o
+  HOSTCC  tools/default_image.o
+  WRAP    tools/lib/fdtdec_common.c
+  WRAP    tools/lib/fdtdec.c
+  WRAP    tools/common/image.c
+  HOSTCC  tools/imagetool.o
+In file included from /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/tools/default_image.c:20:
+In function ‘image_set_name’,
+    inlined from ‘image_set_header’ at /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/tools/default_image.c:134:2:
+/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/include/image.h:817:9: warning: ‘strncpy’ specified bound 32 equals destination size [-Wstringop
+-truncation]                                                                                                                                         817 |         strncpy(image_get_name(hdr), name, IH_NMLEN);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  HOSTCC  tools/imximage.o
+  HOSTCC  tools/imx8image.o
+  HOSTCC  tools/imx8mimage.o
+  WRAP    tools/lib/md5.c
+  HOSTCC  tools/lpc32xximage.o
+  HOSTCC  tools/mxsimage.o
+  HOSTCC  tools/omapimage.o
+  HOSTCC  tools/pblimage.o
+  HOSTCC  tools/pbl_crc32.o
+  HOSTCC  tools/vybridimage.o
+  HOSTCC  tools/stm32image.o
+  WRAP    tools/lib/rc4.c
+  HOSTCC  tools/rkcommon.o
+  HOSTCC  tools/rkimage.o
+  HOSTCC  tools/rksd.o
+  HOSTCC  tools/rkspi.o
+  HOSTCC  tools/socfpgaimage.o
+  HOSTCC  tools/sunxi_egon.o
+  WRAP    tools/lib/crc16.c
+  WRAP    tools/lib/hash-checksum.c
+  WRAP    tools/lib/sha1.c
+  WRAP    tools/lib/sha256.c
+  WRAP    tools/lib/sha512.c
+  WRAP    tools/common/hash.c
+  HOSTCC  tools/ublimage.o
+  HOSTCC  tools/zynqimage.o
+  HOSTCC  tools/zynqmpimage.o
+  HOSTCC  tools/zynqmpbif.o
+  HOSTCC  tools/libfdt/fdt.o
+  HOSTCC  tools/libfdt/fdt_ro.o
+  HOSTCC  tools/libfdt/fdt_wip.o
+  HOSTCC  tools/libfdt/fdt_sw.o
+  HOSTCC  tools/libfdt/fdt_rw.o
+  HOSTCC  tools/libfdt/fdt_strerror.o
+  HOSTCC  tools/libfdt/fdt_empty_tree.o
+  HOSTCC  tools/libfdt/fdt_addresses.o
+  HOSTCC  tools/libfdt/fdt_overlay.o
+  HOSTCC  tools/gpimage.o
+  HOSTCC  tools/gpimage-common.o
+  HOSTCC  tools/mtk_image.o
+  HOSTCC  tools/dumpimage.o
+  HOSTCC  tools/common/image-fit.o
+  HOSTCC  tools/common/fdt_region.o
+  HOSTCC  tools/common/bootm.o
+  HOSTCC  tools/lib/fdtdec_common.o
+  HOSTCC  tools/lib/fdtdec.o
+  HOSTCC  tools/common/image.o
+  HOSTCC  tools/lib/md5.o
+  HOSTCC  tools/lib/rc4.o
+  HOSTCC  tools/lib/crc16.o
+  HOSTCC  tools/lib/hash-checksum.o
+  HOSTCC  tools/lib/sha1.o
+  HOSTCC  tools/lib/sha256.o
+  HOSTCC  tools/lib/sha512.o
+  HOSTCC  tools/common/hash.o
+  HOSTCC  tools/mkimage.o
+  HOSTCC  tools/proftool
+  HOSTCC  tools/prelink-riscv
+  HOSTCC  tools/fdtgrep.o
+  HOSTCC  tools/spl_size_limit
+  HOSTCC  tools/lib/crc8.o
+  HOSTLD  tools/mkenvimage
+  HOSTLD  tools/dumpimage
+  HOSTLD  tools/mkimage
+  HOSTLD  tools/gen_ethaddr_crc
+  HOSTLD  tools/fdtgrep
+  CC      arch/riscv/cpu/cpu.o
+  AS      arch/riscv/cpu/mtrap.o
+  CC      arch/riscv/cpu/generic/dram.o
+  CC      arch/riscv/lib/bootm.o
+  AS      arch/riscv/cpu/start.o
+  CC      arch/riscv/cpu/generic/cpu.o
+  CC      arch/riscv/cpu/generic/cache.o
+  AR      arch/riscv/cpu/built-in.o
+  CC      arch/riscv/lib/cache.o
+  CC      arch/riscv/lib/sbi.o
+  AR      arch/riscv/cpu/generic/built-in.o
+  CC      board/cvitek/cv180x/board.o
+  AR      cmd/riscv/built-in.o
+  CC      cmd/boot.o
+  CC      arch/riscv/lib/interrupts.o
+  CC      arch/riscv/lib/reset.o
+  CC      cmd/bootm.o
+  AS      arch/riscv/lib/setjmp.o
+  CC      arch/riscv/lib/fdt_fixup.o
+  AR      board/cvitek/cv180x/built-in.o
+  CC      cmd/help.o
+  AS      arch/riscv/lib/memset.o
+  AS      arch/riscv/lib/memmove.o
+  CC      cmd/panic.o
+  CC      cmd/version.o
+  AS      arch/riscv/lib/memcpy.o
+  CC      cmd/blk_common.o
+  CC      cmd/echo.o
+  AR      arch/riscv/lib/built-in.o
+  CC      cmd/exit.o
+  CC      common/init/board_init.o
+  CC      cmd/fat.o
+  CC      cmd/cvi_update.o
+  CC      cmd/cvi_utask.o
+  AR      common/init/built-in.o
+  CC      common/main.o
+  CC      cmd/fs.o
+  CC      cmd/load.o
+  CC      common/exports.o
+  CC      cmd/mem.o
+  CC      cmd/mmc.o
+  CC      cmd/net.o
+  CC      common/cli_hush.o
+  CC      cmd/part.o
+  CC      disk/part.o
+  CC      disk/part_dos.o
+  CC      cmd/test.o
+  CC      cmd/efuse.o
+  AR      drivers/adc/built-in.o
+  AR      drivers/ata/built-in.o
+  AR      disk/built-in.o
+  AR      drivers/axi/built-in.o
+  CC      cmd/nvedit.o
+  CC      drivers/block/blk-uclass.o
+  CC      common/autoboot.o
+  CC      drivers/block/blkcache.o
+  AR      cmd/built-in.o
+  CC      drivers/cvi_usb/utask/cv181x/cvi_usb.o
+  CC      common/board_f.o
+  CC      common/board_r.o
+  CC      drivers/cvi_usb/utask/cv181x/cps_cvi.o
+  AR      drivers/block/built-in.o
+  AR      drivers/bus/built-in.o
+  AR      drivers/cache/built-in.o
+  CC      drivers/core/device.o
+  CC      drivers/cvi_usb/utask/cv181x/cvi_udc_otg.o
+  CC      common/bootm.o
+  CC      common/bootm_os.o
+  CC      common/fdt_support.o
+  CC      drivers/cvi_usb/utask/cv181x/cvi_udc_otg_xfer_dma.o
+  CC      drivers/cpu/cpu-uclass.o
+  CC      drivers/core/fdtaddr.o
+  CC      drivers/cpu/riscv_cpu.o
+  CC      drivers/core/lists.o
+  AR      drivers/cpu/built-in.o
+  CC      drivers/crypto/fsl/sec.o
+  CC      drivers/core/root.o
+  AR      drivers/crypto/fsl/built-in.o
+  AR      drivers/crypto/rsa_mod_exp/built-in.o
+  AR      drivers/crypto/built-in.o
+  AR      drivers/cvi_sound/built-in.o
+  AR      drivers/dfu/built-in.o
+  AR      drivers/i2c/built-in.o
+  CC      drivers/input/key_matrix.o
+  CC      drivers/cvi_usb/utask/cv181x/usb_tty.o
+  CC      common/miiphyutil.o
+  CC      drivers/core/uclass.o
+  AR      drivers/input/built-in.o
+  AR      drivers/mailbox/built-in.o
+  AR      drivers/memory/built-in.o
+  AR      drivers/misc/built-in.o
+  CC      drivers/mmc/mmc.o
+  CC      common/splash.o
+  CC      common/cli_readline.o
+  AR      drivers/cvi_usb/built-in.o
+  CC      common/cli_simple.o
+  CC      drivers/core/util.o
+  CC      common/console.o
+  CC      drivers/core/device-remove.o
+  CC      common/dlmalloc.o
+  CC      common/malloc_simple.o
+  CC      drivers/core/simple-bus.o
+  CC      common/image.o
+  CC      drivers/core/dump.o
+  CC      common/hash.o
+  CC      drivers/mmc/mmc-uclass.o
+  CC      drivers/core/of_extra.o
+  CC      common/image-fdt.o
+  CC      drivers/core/ofnode.o
+  CC      drivers/core/read_extra.o
+  CC      common/image-fit.o
+  CC      drivers/mmc/mmc_write.o
+  AR      drivers/dma/ti/built-in.o
+  AR      drivers/dma/built-in.o
+  AR      drivers/gpio/built-in.o
+  AR      drivers/net/mscc_eswitch/built-in.o
+  CC      drivers/mmc/sdhci.o
+  AR      drivers/net/qe/built-in.o
+  AR      drivers/net/ti/built-in.o
+  CC      drivers/net/designware.o
+  AR      drivers/core/built-in.o
+  AR      drivers/mtd/nand/built-in.o
+  AR      drivers/mtd/onenand/built-in.o
+  AR      drivers/mtd/spi/built-in.o
+  CC      drivers/mtd/mtdcore.o
+  CC      common/memsize.o
+  AR      drivers/net/built-in.o
+  CC      common/stdio.o
+  CC      common/cli.o
+  CC      drivers/mmc/cvitek/sdhci-cv180x.o
+  CC      common/command.o
+  CC      common/s_record.o
+  CC      drivers/mtd/mtd_uboot.o
+  AR      drivers/pwm/built-in.o
+  AR      common/built-in.o
+  AR      drivers/reset/built-in.o
+  AR      drivers/rtc/built-in.o
+  CC      drivers/net/phy/phy.o
+  AR      drivers/scsi/built-in.o
+  AR      drivers/smem/built-in.o
+  AR      drivers/soc/built-in.o
+  AR      drivers/mtd/mtd.o
+  AR      drivers/mtd/built-in.o
+  AR      drivers/sound/built-in.o
+  AR      drivers/spmi/built-in.o
+  AR      drivers/mmc/built-in.o
+  AR      drivers/thermal/built-in.o
+  AR      drivers/ufs/built-in.o
+  CC      drivers/timer/timer-uclass.o
+  CC      drivers/timer/riscv_timer.o
+  AR      drivers/video/bridge/built-in.o
+  AR      drivers/video/sunxi/built-in.o
+  AR      drivers/video/ti/built-in.o
+  AR      drivers/video/built-in.o
+  AR      drivers/watchdog/built-in.o
+  AR      drivers/power/built-in.o
+  AR      drivers/power/battery/built-in.o
+  AR      drivers/power/domain/built-in.o
+  AR      drivers/power/fuel_gauge/built-in.o
+  AR      drivers/power/mfd/built-in.o
+  AR      drivers/power/pmic/built-in.o
+  AR      drivers/power/regulator/built-in.o
+  CC      drivers/serial/serial.o
+  CC      drivers/spi/spi.o
+  AR      drivers/timer/built-in.o
+  AR      drivers/built-in.o
+  AR      drivers/usb/cdns3/built-in.o
+  AR      drivers/usb/common/built-in.o
+  AR      drivers/usb/dwc3/built-in.o
+  AR      drivers/spi/built-in.o
+  AR      drivers/usb/emul/built-in.o
+  AR      drivers/usb/eth/built-in.o
+  CC      drivers/serial/serial_ns16550.o
+  AR      drivers/usb/host/built-in.o
+  AR      drivers/usb/mtu3/built-in.o
+  CC      drivers/serial/ns16550.o
+  CC      drivers/net/phy/cvitek.o
+  AR      drivers/usb/musb/built-in.o
+  AR      drivers/usb/phy/built-in.o
+  AR      drivers/usb/ulpi/built-in.o
+  AR      drivers/serial/built-in.o
+  CC      env/common.o
+  CC      fs/fat/fat_write.o
+  AR      drivers/usb/musb-new/built-in.o
+  AR      drivers/net/phy/built-in.o
+  AR      lib/crypto/built-in.o
+  CC      net/arp.o
+  CC      lib/libfdt/fdt.o
+  CC      env/env.o
+  CC      net/eth-uclass.o
+  CC      env/attr.o
+  CC      lib/libfdt/fdt_ro.o
+  CC      env/flags.o
+  CC      net/eth_common.o
+  CC      env/callback.o
+  CC      net/net.o
+  CC      env/nowhere.o
+  AR      env/built-in.o
+  CC      lib/lzma/LzmaDec.o
+  CC      lib/libfdt/fdt_wip.o
+  CC      lib/libfdt/fdt_strerror.o
+  CC      lib/libfdt/fdt_sw.o
+  AR      fs/fat/built-in.o
+  AR      net/built-in.o
+  CC      fs/fs.o
+  CC      lib/lzma/LzmaTools.o
+  CC      fs/fs_internal.o
+  CC      lib/libfdt/fdt_rw.o
+  CC      lib/libfdt/fdt_empty_tree.o
+  CC      lib/libfdt/fdt_addresses.o
+  AR      fs/built-in.o
+  CC      lib/zlib/zlib.o
+  AR      lib/lzma/built-in.o
+  CC      lib/crc8.o
+  CC      lib/crc16.o
+  CC      lib/fdtdec_common.o
+  CC      lib/ldiv.o
+  CC      lib/net_utils.o
+  AR      lib/libfdt/built-in.o
+  CC      lib/rc4.o
+  CC      lib/list_sort.o
+  CC      lib/md5.o
+  CC      lib/hash-checksum.o
+  CC      lib/sha1.o
+  CC      lib/sha256.o
+  CC      lib/fdtdec.o
+  CC      lib/qsort.o
+  CC      lib/hashtable.o
+  AR      lib/zlib/built-in.o
+  CC      lib/errno.o
+  CC      lib/display_options.o
+  CC      lib/crc32.o
+  CC      lib/ctype.o
+  CC      lib/div64.o
+  CC      lib/hang.o
+  CC      lib/linux_compat.o
+  CC      lib/linux_string.o
+  CC      lib/lmb.o
+  CC      lib/membuff.o
+  CC      lib/string.o
+  CC      lib/tables_csum.o
+  CC      lib/time.o
+  CC      lib/hexdump.o
+  CC      lib/uuid.o
+  CC      lib/rand.o
+  CC      lib/panic.o
+  CC      lib/vsprintf.o
+  CC      lib/strto.o
+  CC      lib/date.o
+  CC      lib/rtc-lib.o
+  AR      lib/built-in.o
+  LD      u-boot
+  OBJCOPY u-boot.srec
+  OBJCOPY u-boot-nodtb.bin
+  SYM     u-boot.sym
+  DTC     arch/riscv/dts/cv1800b_milkv_duo_sd.dtb
+arch/riscv/dts/cv1800b_milkv_duo_sd.dtb: Warning (interrupts_property): /cv-wd@0x3010000: Missing interrupt-parent
+  SHIPPED dts/dt.dtb
+  CAT     u-boot-dtb.bin
+  COPY    u-boot.dtb
+  COPY    u-boot.bin
+  LD      u-boot.elf
+make[2]: 离开目录“/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd”
+make[1]: 离开目录“/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10”
+cat /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd/u-boot.bin > /home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/b
+uild/cv1800b_milkv_duo_sd/u-boot-raw.bin    

@@ -26,9 +26,32 @@ kvmmake(void)
 
   // uart registers
   kvmmap(kpgtbl, UART0, UART0, PGSIZE, PTE_R | PTE_W);
+  kvmmap(kpgtbl, UART4, UART4, PGSIZE, PTE_R | PTE_W);
 
   // virtio mmio disk interface
-  kvmmap(kpgtbl, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);
+  // kvmmap(kpgtbl, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);
+
+  // i2c registers
+  // kvmmap(kpgtbl, I2C0, I2C0, PGSIZE, PTE_R | PTE_W);
+  kvmmap(kpgtbl, I2C1, I2C1, PGSIZE, PTE_R | PTE_W);
+  // kvmmap(kpgtbl, I2C2, I2C2, PGSIZE, PTE_R | PTE_W);
+  // kvmmap(kpgtbl, I2C3, I2C3, PGSIZE, PTE_R | PTE_W);
+  // kvmmap(kpgtbl, I2C4, I2C4, PGSIZE, PTE_R | PTE_W);
+
+  // adc registers
+  kvmmap(kpgtbl, ADC0, ADC0, PGSIZE, PTE_R | PTE_W);
+
+  // pwm registers
+  kvmmap(kpgtbl, PWM1, PWM1, PGSIZE, PTE_R | PTE_W);
+
+  // gpio registers
+  kvmmap(kpgtbl, GPIO0, GPIO0, PGSIZE, PTE_R | PTE_W);
+  kvmmap(kpgtbl, GPIO1, GPIO1, PGSIZE, PTE_R | PTE_W);
+  kvmmap(kpgtbl, GPIO2, GPIO2, PGSIZE, PTE_R | PTE_W);
+  kvmmap(kpgtbl, GPIO3, GPIO3, PGSIZE, PTE_R | PTE_W);
+
+  // spi registers
+  kvmmap(kpgtbl, SPI2, SPI2, PGSIZE, PTE_R | PTE_W);
 
   // PLIC
   kvmmap(kpgtbl, PLIC, PLIC, 0x400000, PTE_R | PTE_W);
@@ -155,7 +178,7 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
       return -1;
     if(*pte & PTE_V)
       panic("mappages: remap");
-    *pte = PA2PTE(pa) | perm | PTE_V;
+    *pte = PA2PTE(pa) | perm | PTE_V | PTE_A | PTE_D;
     if(a == last)
       break;
     a += PGSIZE;

@@ -33,8 +33,17 @@ struct inode {
 struct devsw {
   int (*read)(int, uint64, int);
   int (*write)(int, uint64, int);
+  int (*ioctl)(int, unsigned int, unsigned long);
+  int (*open)(struct inode *);
+  int (*close)(void);
 };
 
 extern struct devsw devsw[];
 
 #define CONSOLE 1
+#define I2C     2
+#define UART    3
+#define ADC     4
+#define PWM     5
+#define GPIO    6
+#define SPI     7

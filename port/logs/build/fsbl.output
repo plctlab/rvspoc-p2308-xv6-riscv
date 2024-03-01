@@ -1,0 +1,176 @@
+  [TARGET] fsbl-build
+mkdir -p /home/juhan/local/duo-buildroot-sdk/fsbl/build
+ln -snrf -t /home/juhan/local/duo-buildroot-sdk/fsbl/build /home/juhan/local/duo-buildroot-sdk/build/output/cv1800b_milkv_duo_sd/cvi_board_memmap.h
+make -j4 -C /home/juhan/local/duo-buildroot-sdk/fsbl O=/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd BLCP_2ND_PATH=/home/juhan/local/duo-buildroot-sdk/freertos/cvitek/install/bin/cvirtos.bin \
+        LOADER_2ND_PATH=/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd/u-boot-raw.bin
+make[1]: 进入目录“/home/juhan/local/duo-buildroot-sdk/fsbl”
+  MAKECMDGOALS
+  [VAR] CHIP_ARCH=cv180x
+  [VAR] BOOT_CPU=riscv
+  [VAR] TEST_FROM_SPINOR1=0
+  [VAR] PAGE_SIZE_64KB=1
+mkdir -p  "/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2"
+mkdir -p  "/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros"
+  TARGET gen-chip-conf
+./plat/cv180x/chip_conf.py /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/chip_conf.bin
+  CC      plat/cv180x/bl2/bl2_main.c
+riscv64-unknown-linux-gnu-gcc -ggdb3 -gdwarf-2 -DLZ4_USER_MEMORY_FUNCTIONS=1 -DNO_ALLOCS -DARGTYPE=3 -DLTC_NO_FILE -DLTM_NO_FILE -DLTM_DESC -DLTC_SOURCE -DRISCV -DTEST_FROM_SPINOR1=0 -DPAGE_SIZE_64KB=1 -DPRINTF_TIMESTAMP=0 -DENABLE_ASSERTIONS=1 -DLOG_LEVEL=2 -D__CVITEK__ -DNANDBOOT_V2=1 -DTOC_HEADER_NAME=0xC906B001 -DRTOS_ENABLE_FREERTOS=y -DRTOS_DUMP_PRINT_SZ_IDX=17 -DRTOS_FAST_IMAGE_TYPE=0 -DRTOS_DUMP_PRINT_ENABLE=1 -DFSBL_SECURE_BOOT_SUPPORT=0 -D USB_DL_BY_FSBL -Iinclude -Iinclude/cpu/riscv  -Iplat/ -Iplat/cv180x/include/uart -Iplat/cv180x/include/usb -Iplat/cv180x/include -Iplat/cv180x/include/riscv -Ilib/utils -Ilib/lzma -Ilib/lz4 -Ilib/crc -Iinclude/stdlib -Iinclude/stdlib/sys -Ilib/libtommath -Ilib/libtomcrypt/src/headers -Ilib/BigDigits -Ibuild -Iinclude/cpu -nostdinc -Wmissing-include-dirs -Werror -DRISCV -march=rv64imafdcvxthead -mcmodel=medany -mabi=lp64d -ffreestanding -fno-builtin -Wall -std=gnu99 -Os -ffunction-sections -fdata-sections -fno-delete-null-pointer-checks  -DIMAGE_BL2 -Wp,-MD,/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2_main.d -MT /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2_main.o -MP -c plat/cv180x/bl2/bl2_main.c -o /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2_main.o
+  AS      lib/cpu/riscv/bl2_entrypoint.S
+riscv64-unknown-linux-gnu-gcc -g -Wa,--gdwarf-2 -DLZ4_USER_MEMORY_FUNCTIONS=1 -DNO_ALLOCS -DARGTYPE=3 -DLTC_NO_FILE -DLTM_NO_FILE -DLTM_DESC -DLTC_SOURCE -DRISCV -DTEST_FROM_SPINOR1=0 -DPAGE_SIZE_64KB=1 -DPRINTF_TIMESTAMP=0 -DENABLE_ASSERTIONS=1 -DLOG_LEVEL=2 -D__CVITEK__ -DNANDBOOT_V2=1 -DTOC_HEADER_NAME=0xC906B001 -DRTOS_ENABLE_FREERTOS=y -DRTOS_DUMP_PRINT_SZ_IDX=17 -DRTOS_FAST_IMAGE_TYPE=0 -DRTOS_DUMP_PRINT_ENABLE=1 -DFSBL_SECURE_BOOT_SUPPORT=0 -D USB_DL_BY_FSBL -Iinclude -Iinclude/cpu/riscv  -Iplat/ -Iplat/cv180x/include/uart -Iplat/cv180x/include/usb -Iplat/cv180x/include -Iplat/cv180x/include/riscv -Ilib/utils -Ilib/lzma -Ilib/lz4 -Ilib/crc -Iinclude/stdlib -Iinclude/stdlib/sys -Ilib/libtommath -Ilib/libtomcrypt/src/headers -Ilib/BigDigits -Ibuild -Iinclude/cpu -nostdinc -Wmissing-include-dirs -Werror -DRISCV -D__ASSEMBLY__ -march=rv64imafdcvxthead -mstrict-align -mcmodel=medany -mabi=lp64d -ffreestanding -Wa,--fatal-warnings -DIMAGE_BL2 -Wp,-MD,/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2_entrypoint.d -MT /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2_entrypoint.o -MP -c lib/cpu/riscv/bl2_entrypoint.S -o /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2_entrypoint.o
+  PP      plat/cv180x/bl2/bl2.ld.S
+riscv64-unknown-linux-gnu-cpp -DLZ4_USER_MEMORY_FUNCTIONS=1 -DNO_ALLOCS -DARGTYPE=3 -DLTC_NO_FILE -DLTM_NO_FILE -DLTM_DESC -DLTC_SOURCE -DRISCV -DTEST_FROM_SPINOR1=0 -DPAGE_SIZE_64KB=1 -DPRINTF_TIMESTAMP=0 -DENABLE_ASSERTIONS=1 -DLOG_LEVEL=2 -D__CVITEK__ -DNANDBOOT_V2=1 -DTOC_HEADER_NAME=0xC906B001 -DRTOS_ENABLE_FREERTOS=y -DRTOS_DUMP_PRINT_SZ_IDX=17 -DRTOS_FAST_IMAGE_TYPE=0 -DRTOS_DUMP_PRINT_ENABLE=1 -DFSBL_SECURE_BOOT_SUPPORT=0 -D USB_DL_BY_FSBL -Iinclude -Iinclude/cpu/riscv  -Iplat/ -Iplat/cv180x/include/uart -Iplat/cv180x/include/usb -Iplat/cv180x/include -Iplat/cv180x/include/riscv -Ilib/utils -Ilib/lzma -Ilib/lz4 -Ilib/crc -Iinclude/stdlib -Iinclude/stdlib/sys -Ilib/libtommath -Ilib/libtomcrypt/src/headers -Ilib/BigDigits -Ibuild -Iinclude/cpu -nostdinc -Wmissing-include-dirs -Werror -P -D__ASSEMBLY__ -D__LINKER__ -Wp,-MD,/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.ld.d -MT /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.ld -MP -o /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.ld plat/cv180x/bl2/bl2.ld.S
+  PP      make_helpers/get_macros.ld.S
+riscv64-unknown-linux-gnu-cpp -DLZ4_USER_MEMORY_FUNCTIONS=1 -DNO_ALLOCS -DARGTYPE=3 -DLTC_NO_FILE -DLTM_NO_FILE -DLTM_DESC -DLTC_SOURCE -DRISCV -DTEST_FROM_SPINOR1=0 -DPAGE_SIZE_64KB=1 -DPRINTF_TIMESTAMP=0 -DENABLE_ASSERTIONS=1 -DLOG_LEVEL=2 -D__CVITEK__ -DNANDBOOT_V2=1 -DTOC_HEADER_NAME=0xC906B001 -DRTOS_ENABLE_FREERTOS=y -DRTOS_DUMP_PRINT_SZ_IDX=17 -DRTOS_FAST_IMAGE_TYPE=0 -DRTOS_DUMP_PRINT_ENABLE=1 -DFSBL_SECURE_BOOT_SUPPORT=0 -D USB_DL_BY_FSBL -Iinclude -Iinclude/cpu/riscv  -Iplat/ -Iplat/cv180x/include/uart -Iplat/cv180x/include/usb -Iplat/cv180x/include -Iplat/cv180x/include/riscv -Ilib/utils -Ilib/lzma -Ilib/lz4 -Ilib/crc -Iinclude/stdlib -Iinclude/stdlib/sys -Ilib/libtommath -Ilib/libtomcrypt/src/headers -Ilib/BigDigits -Ibuild -Iinclude/cpu -nostdinc -Wmissing-include-dirs -Werror -P -D__ASSEMBLY__ -D__LINKER__ -Wp,-MD,/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.ld.d -MT /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.ld -MP -o /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.ld make_helpers/get_macros.ld.S
+  LD      /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.elf
+riscv64-unknown-linux-gnu-ld -o /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.elf --fatal-warnings -Os --gc-sections   -Map=/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.map --script /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.ld /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/build_message.o plat/cv180x/bl2_objs/cv1800b_milkv_duo_sd/bl2/*.o
+  LD      /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.elf
+riscv64-unknown-linux-gnu-ld -o /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.elf --fatal-warnings -Os --gc-sections   -Map=/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.map --script /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.ld /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/build_message.o plat/cv180x/bl2_objs/cv1800b_milkv_duo_sd/bl2/*.o /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2_main.o /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2_entrypoint.o
+  BIN     /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros.bin
+riscv64-unknown-linux-gnu-objcopy -O binary /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.elf /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros.bin
+  SYM     /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.sym
+riscv64-unknown-linux-gnu-readelf -s /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.elf | sort -b -r -g -k 3 > /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.sym
+  OD      /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.dis
+riscv64-unknown-linux-gnu-objdump -dx /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.elf > /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.dis
+
+Built /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros.bin successfully
+
+  TARGET blmacros
+  TARGET blmacros-env
+> /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros.env  # clear .env first
+riscv64-unknown-linux-gnu-nm '/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.elf' | awk '/DEF_MONITOR_RUNADDR/ { rc = 1; print "MONITOR_RUNADDR=0x" $1 } END { exit !rc }' >> /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros.env
+riscv64-unknown-linux-gnu-nm '/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros/blmacros.elf' | awk '/DEF_BLCP_2ND_RUNADDR/ { rc = 1; print "BLCP_2ND_RUNADDR=0x" $1 } END { exit !rc }' >> /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros.env
+  BIN     /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2.bin
+riscv64-unknown-linux-gnu-objcopy -O binary /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.elf /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2.bin
+  SYM     /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.sym
+riscv64-unknown-linux-gnu-readelf -s /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.elf | sort -b -r -g -k 3 > /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.sym
+
+  OD      /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.dis
+riscv64-unknown-linux-gnu-objdump -dx /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.elf > /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2/bl2.dis
+Built /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2.bin successfully
+
+  TARGET bl2
+  TARGET fip-all
+echo "  [GEN] fip.bin"
+  [GEN] fip.bin
+. /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/blmacros.env && \
+./plat/cv180x/fiptool.py -v genfip \
+        '/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/fip.bin' \
+        --MONITOR_RUNADDR="${MONITOR_RUNADDR}" \
+        --BLCP_2ND_RUNADDR="${BLCP_2ND_RUNADDR}" \
+        --CHIP_CONF='/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/chip_conf.bin' \
+        --NOR_INFO='FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF' \
+        --NAND_INFO='00000000'\
+        --BL2='/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2.bin' \
+        --BLCP_IMG_RUNADDR=0x05200200 \
+        --BLCP_PARAM_LOADADDR=0 \
+        --BLCP=test/empty.bin \
+        --DDR_PARAM='test/cv181x/ddr_param.bin' \
+        --BLCP_2ND='/home/juhan/local/duo-buildroot-sdk/freertos/cvitek/install/bin/cvirtos.bin' \
+        --MONITOR='../opensbi/build/platform/generic/firmware/fw_dynamic.bin' \
+        --LOADER_2ND='/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd/u-boot-raw.bin' \
+        --compress='lzma'
+INFO:root:PROG: fiptool.py
+DEBUG:root:  BL2='/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/bl2.bin'
+DEBUG:root:  BL2_FILL=None
+DEBUG:root:  BLCP='test/empty.bin'
+DEBUG:root:  BLCP_2ND='/home/juhan/local/duo-buildroot-sdk/freertos/cvitek/install/bin/cvirtos.bin'
+DEBUG:root:  BLCP_2ND_RUNADDR=2213806080
+DEBUG:root:  BLCP_IMG_RUNADDR=85983744
+DEBUG:root:  BLCP_PARAM_LOADADDR=0
+DEBUG:root:  BLOCK_SIZE=None
+DEBUG:root:  CHIP_CONF='/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/chip_conf.bin'
+DEBUG:root:  DDR_PARAM='test/cv181x/ddr_param.bin'
+DEBUG:root:  LOADER_2ND='/home/juhan/local/duo-buildroot-sdk/u-boot-2021.10/build/cv1800b_milkv_duo_sd/u-boot-raw.bin'
+DEBUG:root:  MONITOR='../opensbi/build/platform/generic/firmware/fw_dynamic.bin'
+DEBUG:root:  MONITOR_RUNADDR=2147483648
+DEBUG:root:  NAND_INFO=b'\x00\x00\x00\x00'
+DEBUG:root:  NOR_INFO=b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff'
+DEBUG:root:  OLD_FIP=None
+DEBUG:root:  compress='lzma'
+DEBUG:root:  func=<function generate_fip at 0x7f196e4aa5c0>
+DEBUG:root:  output='/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/fip.bin'
+DEBUG:root:  subcmd='genfip'
+DEBUG:root:  verbose=10
+DEBUG:root:generate_fip:
+DEBUG:root:add_nor_info:
+DEBUG:root:add_nand_info:
+DEBUG:root:add_chip_conf:
+DEBUG:root:add_blcp:
+DEBUG:root:add_bl2:
+DEBUG:root:ddr_param=0x2000 bytes
+DEBUG:root:blcp_2nd=0x34a8 bytes
+DEBUG:root:monitor=0x1af88 bytes
+DEBUG:root:loader_2nd=0x42c25 bytes
+DEBUG:root:make_fip1:
+INFO:root:add BLCP (0x0)
+INFO:root:add BL2 (0xba00)
+DEBUG:root:len(body1_bin) is 47616
+DEBUG:root:len(fip1_bin) is 51712
+DEBUG:root:make_fip2:
+DEBUG:root:pack_blcp_2nd:
+DEBUG:root:pack_monitor:
+DEBUG:root:pack_loader_2nd:
+INFO:root:lzma loader_2nd=0x1f94d bytes wo header
+DEBUG:root:len(param2_bin) is 4096
+INFO:root:generated fip_bin is 317952 bytes
+INFO:root:print(param1):
+[   <MAGIC1: a=0x0 s=0x8 c=0xa31304c425643 <class 'int'>>,
+    <MAGIC2: a=0x8 s=0x4 c=0x000000 <class 'int'>>,
+    <PARAM_CKSUM: a=0xc s=0x4 c=0xcafe3974 <class 'int'>>,
+    <NAND_INFO: a=0x10 s=0x80 c=0x000000 <class 'int'>>,
+    <NOR_INFO: a=0x90 s=0x24 c=0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff <class 'int'>>,
+    <FIP_FLAGS: a=0xb4 s=0x8 c=0x000000 <class 'int'>>,
+    <CHIP_CONF_SIZE: a=0xbc s=0x4 c=0x0002f8 <class 'int'>>,
+    <BLCP_IMG_CKSUM: a=0xc0 s=0x4 c=0xcafe0000 <class 'int'>>,
+    <BLCP_IMG_SIZE: a=0xc4 s=0x4 c=0x000000 <class 'int'>>,
+    <BLCP_IMG_RUNADDR: a=0xc8 s=0x4 c=0x5200200 <class 'int'>>,
+    <BLCP_PARAM_LOADADDR: a=0xcc s=0x4 c=0x000000 <class 'int'>>,
+    <BLCP_PARAM_SIZE: a=0xd0 s=0x4 c=0x000000 <class 'int'>>,
+    <BL2_IMG_CKSUM: a=0xd4 s=0x4 c=0xcafe6068 <class 'int'>>,
+    <BL2_IMG_SIZE: a=0xd8 s=0x4 c=0x00ba00 <class 'int'>>,
+    <BLD_IMG_SIZE: a=0xdc s=0x4 c=0x000000 <class 'int'>>,
+    <PARAM2_LOADADDR: a=0xe0 s=0x4 c=0x00ca00 <class 'int'>>,
+    <RESERVED1: a=0xe4 s=0x4 c=0x000000 <class 'int'>>,
+    <CHIP_CONF: a=0xe8 s=0x2f8 c=0c00000e010000a00c00000e020000a0... <class 'bytes'>>,
+    <BL_EK: a=0x3e0 s=0x20 c=00000000000000000000000000000000... <class 'bytes'>>,
+    <ROOT_PK: a=0x400 s=0x200 c=00000000000000000000000000000000... <class 'bytes'>>,
+    <BL_PK: a=0x600 s=0x200 c=00000000000000000000000000000000... <class 'bytes'>>,
+    <BL_PK_SIG: a=0x800 s=0x200 c=00000000000000000000000000000000... <class 'bytes'>>,
+    <CHIP_CONF_SIG: a=0xa00 s=0x200 c=00000000000000000000000000000000... <class 'bytes'>>,
+    <BL2_IMG_SIG: a=0xc00 s=0x200 c=00000000000000000000000000000000... <class 'bytes'>>,
+    <BLCP_IMG_SIG: a=0xe00 s=0x200 c=00000000000000000000000000000000... <class 'bytes'>>]
+INFO:root:print(param2):
+[   <MAGIC1: a=0x0 s=0x8 c=0xa3230444c5643 <class 'int'>>,
+    <PARAM2_CKSUM: a=0x8 s=0x4 c=0xcafe6202 <class 'int'>>,
+    <RESERVED1: a=0xc s=0x4 c=00000000 <class 'bytes'>>,
+    <DDR_PARAM_CKSUM: a=0x10 s=0x4 c=0xcafe667f <class 'int'>>,
+    <DDR_PARAM_LOADADDR: a=0x14 s=0x4 c=0x00da00 <class 'int'>>,
+    <DDR_PARAM_SIZE: a=0x18 s=0x4 c=0x002000 <class 'int'>>,
+    <DDR_PARAM_RESERVED: a=0x1c s=0x4 c=0x000000 <class 'int'>>,
+    <BLCP_2ND_CKSUM: a=0x20 s=0x4 c=0xcafe1b63 <class 'int'>>,
+    <BLCP_2ND_LOADADDR: a=0x24 s=0x4 c=0x00fa00 <class 'int'>>,
+    <BLCP_2ND_SIZE: a=0x28 s=0x4 c=0x003600 <class 'int'>>,
+    <BLCP_2ND_RUNADDR: a=0x2c s=0x4 c=0x83f40000 <class 'int'>>,
+    <MONITOR_CKSUM: a=0x30 s=0x4 c=0xcafef13d <class 'int'>>,
+    <MONITOR_LOADADDR: a=0x34 s=0x4 c=0x013000 <class 'int'>>,
+    <MONITOR_SIZE: a=0x38 s=0x4 c=0x01b000 <class 'int'>>,
+    <MONITOR_RUNADDR: a=0x3c s=0x4 c=0x80000000 <class 'int'>>,
+    <LOADER_2ND_RESERVED0: a=0x40 s=0x4 c=0x000000 <class 'int'>>,
+    <LOADER_2ND_LOADADDR: a=0x44 s=0x4 c=0x02e000 <class 'int'>>,
+    <LOADER_2ND_RESERVED1: a=0x48 s=0x4 c=0x000000 <class 'int'>>,
+    <LOADER_2ND_RESERVED2: a=0x4c s=0x4 c=0x000000 <class 'int'>>,
+    <RESERVED_LAST: a=0x50 s=0xfb0 c=00000000000000000000000000000000... <class 'bytes'>>]
+INFO:root:print(ldr_2nd_hdr):
+[   <JUMP0: a=0x0 s=0x4 c=0x01a005 <class 'int'>>,
+    <MAGIC: a=0x4 s=0x4 c=0x414d3342 <class 'int'>>,
+    <CKSUM: a=0x8 s=0x4 c=0xcafef699 <class 'int'>>,
+    <SIZE: a=0xc s=0x4 c=0x01fa00 <class 'int'>>,
+    <RUNADDR: a=0x10 s=0x8 c=0x80200000 <class 'int'>>,
+    <RESERVED1: a=0x18 s=0x4 c=0xdeadbeec <class 'int'>>,
+    <RESERVED2: a=0x1c s=0x4 c=0x01a011 <class 'int'>>]
+echo "  [LS] " $(ls -l '/home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/fip.bin')
+  [LS]  -rw-r--r-- 1 juhan juhan 317952 12月27日 23:53 /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/fip.bin
+make[1]: 离开目录“/home/juhan/local/duo-buildroot-sdk/fsbl”
+cp /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/fip.bin /home/juhan/local/duo-buildroot-sdk/install/soc_cv1800b_milkv_duo_sd/
+cp /home/juhan/local/duo-buildroot-sdk/fsbl/build/cv1800b_milkv_duo_sd/fip.bin /home/juhan/local/duo-buildroot-sdk/install/soc_cv1800b_milkv_duo_sd/fip_spl.bin
+mkdir -p /home/juhan/local/duo-buildroot-sdk/install/soc_cv1800b_milkv_duo_sd/elf

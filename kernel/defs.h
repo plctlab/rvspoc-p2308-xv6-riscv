@@ -22,6 +22,30 @@ void            consoleinit(void);
 void            consoleintr(int);
 void            consputc(int);
 
+// i2c_dev.c
+void            i2cdev_init(void);
+
+// i2c_designware.c
+struct i2c_adapter* i2c_dw_init(short minor);
+void            i2c_dw_intr(void);
+void            i2c_dw_close(void);
+
+// uart_dev.c
+void            uartdev_init(void);
+
+// adc_dev.c
+void            adcdev_init(void);
+void            adcdev_intr(void);
+
+// pwm_dev.c
+void            pwmdev_init(void);
+
+// gpio_dev.c
+void            gpiodev_init(void);
+
+// spi_dev.c
+void            spidev_init(void);
+
 // exec.c
 int             exec(char*, char**);
 
@@ -33,6 +57,7 @@ void            fileinit(void);
 int             fileread(struct file*, uint64, int n);
 int             filestat(struct file*, uint64 addr);
 int             filewrite(struct file*, uint64, int n);
+int             fileioctl(struct file *f, unsigned int cmd, unsigned long arg);
 
 // fs.c
 void            fsinit(int);
@@ -56,8 +81,8 @@ void            itrunc(struct inode*);
 
 // ramdisk.c
 void            ramdiskinit(void);
-void            ramdiskintr(void);
-void            ramdiskrw(struct buf*);
+// void            ramdiskintr(void);
+void            ramdiskrw(struct buf*, int write);
 
 // kalloc.c
 void*           kalloc(void);
@@ -135,6 +160,9 @@ char*           strncpy(char*, const char*, int);
 
 // syscall.c
 void            argint(int, int*);
+void            arguint(int, uint*);
+void            argulong(int, uint64*);
+void            argint(int, int*);
 int             argstr(int, char*, int);
 void            argaddr(int, uint64 *);
 int             fetchstr(uint64, char*, int);
@@ -181,9 +209,9 @@ int             plic_claim(void);
 void            plic_complete(int);
 
 // virtio_disk.c
-void            virtio_disk_init(void);
-void            virtio_disk_rw(struct buf *, int);
-void            virtio_disk_intr(void);
+// void            virtio_disk_init(void);
+// void            virtio_disk_rw(struct buf *, int);
+// void            virtio_disk_intr(void);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

@@ -107,9 +107,15 @@ timervec:
         # by adding interval to mtimecmp.
         ld a1, 24(a0) # CLINT_MTIMECMP(hart)
         ld a2, 32(a0) # interval
-        ld a3, 0(a1)
+        # read the value of time into a3
+        csrr a3, time
+        # add interval to time
         add a3, a3, a2
-        sd a3, 0(a1)
+        # sd a3, 0(a1)
+        # write the value of time from a3 to MTIMECMP
+        sw a3, 0(a1)
+        srli a3, a3, 32
+        sw a3, 4(a1)
 
         # arrange for a supervisor software interrupt
         # after this handler returns.

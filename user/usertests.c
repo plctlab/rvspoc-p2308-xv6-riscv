@@ -503,6 +503,7 @@ openiputtest(char *s)
       printf("%s: open directory for write succeeded\n", s);
       exit(1);
     }
+    printf("child exit\n");
     exit(0);
   }
   sleep(1);
@@ -510,6 +511,7 @@ openiputtest(char *s)
     printf("%s: unlink failed\n", s);
     exit(1);
   }
+  printf("parent waiting\n");
   wait(&xstatus);
   exit(xstatus);
 }
@@ -2060,7 +2062,7 @@ sbrkbasic(char *s)
 void
 sbrkmuch(char *s)
 {
-  enum { BIG=100*1024*1024 };
+  enum { BIG=40*1024*1024 };
   char *c, *oldbrk, *a, *lastaddr, *p;
   uint64 amt;
 
