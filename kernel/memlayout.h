@@ -53,12 +53,20 @@
 #define ADC0  0x030F0000L
 #define ADC0_IRQ 100
 
+#define PWM0  0x03060000L
 #define PWM1  0x03061000L
+#define PWM2  0x03062000L
+#define PWM3  0x03063000L
 
-#define GPIO0 0x03020000
-#define GPIO1 0x03021000
-#define GPIO2 0x03022000
-#define GPIO3 0x03023000
+#define GPIO0 0x03020000L
+#define GPIO1 0x03021000L
+#define GPIO2 0x03022000L
+#define GPIO3 0x03023000L
+
+#define SPI0 0x04180000L
+#define SPI1 0x04190000L
+#define SPI2 0x041A0000L
+#define SPI3 0x041B0000L
 
 // virtio mmio interface
 // #define VIRTIO0 0x10001000

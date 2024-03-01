@@ -43,6 +43,9 @@ void            pwmdev_init(void);
 // gpio_dev.c
 void            gpiodev_init(void);
 
+// spi_dev.c
+void            spidev_init(void);
+
 // exec.c
 int             exec(char*, char**);
 

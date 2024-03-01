@@ -46,3 +46,4 @@ extern struct devsw devsw[];
 #define ADC     4
 #define PWM     5
 #define GPIO    6
+#define SPI     7

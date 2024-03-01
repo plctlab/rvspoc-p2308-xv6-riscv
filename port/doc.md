@@ -1,5 +1,9 @@
 # 移植文档
 
+## 烧录
+
+执行根目录下的 script，提供 sd 卡的设备文件名，如 `./script /dev/sdb`，产生的二进制文件路径为 `port/image/output/milkv-duo.img`。
+
 ## 驱动
 
 - i2c
@@ -9,6 +13,8 @@
   驱动支持每次控制 i2c 0、1、2、3、4 中的任意 1 个，ioctl 配置 slave 地址，并 read write 值。
 
   为了演示方便，测试示例只驱动 i2c 1。
+
+  测试示例需要连接陀螺仪传感器 MPU6050，可以获得三轴加速度和角速度（数据为未经处理的原始数据）。
 
 - uart
 
@@ -20,6 +26,8 @@
 
   为了演示方便，测试示例只驱动 uart 4。
 
+  测试示例需要把开发板的 uart 4 连接到电脑的串口工具中。一串字符会先被输出到串口工具中，然后我们可以在串口工具中打字，打字的长度由测试示例的第一个参数决定，串口工具中输入的字符会重新在串口工具中显示。
+
 - adc
 
   SOC 提供了 1 个 adc controller，开发板从这个 controller 引出引脚。
@@ -28,13 +36,17 @@
 
   为了演示方便，测试示例只驱动 channel 1。
 
+  测试示例会读 10 次 channel 1 的输入值，可以将 3.3v 输入 channel 1 然后取消输入，观察 channel 1 读取到的数字量的变化。
+
 - pwm
 
   SOC 提供了 4 个 pwm controller，开发板从 controller 1 和 2 引出引脚。
 
-  驱动支持每次控制 controller 1 和 2 中 1 个 controller 的任意 1 个 channel，ioctl 配置并使能 channel。//TODO
+  驱动支持每次控制任意 1 个 controller 的任意 1 个 channel，ioctl 配置并使能 channel。
 
   为了演示方便，测试示例只驱动 pwm5（pwm 1 的 channel 1）。
+
+  测试示例需要连接 DF9GMS 180 微型舵机，可以对 pwm5 设置不同的 duty，使舵机的舵进行不同角度旋转。
 
 - gpio
 
@@ -43,6 +55,18 @@
   驱动支持每次控制任意 1 个 controller 的任意 1 个 channel，ioctl 配置为输入或输出，并 read 或 write 值。
 
   为了演示方便，测试示例只驱动开发板上的 GP0（gpio 0 的 channel 28）和 GP25（gpio 2 的 channel 24）。
+
+  测试示例会先使开发板的蓝色 led 进行闪烁，然后读取 10 次 GP0 处的输入。GP0 的原始输入是 1，接地后输入为 0。
+
+- spi
+
+  SOC 提供了 4 个 spi controller，开发板从 controller 2 引出引脚。
+
+  驱动支持每次控制任意 1 个 controller，ioctl 配置模式与频率，并启动读写。
+
+  为了演示方便，测试示例只驱动 spi 2。
+
+  测试示例为 spi 回环测试，需要短接 spi 2 的两个数据引脚。发出的数据会一摸一样得被接收到。
 
 ### Implementation Notes
 

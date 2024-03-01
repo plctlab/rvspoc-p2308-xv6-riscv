@@ -80,15 +80,11 @@ uint8 i2c_read(int fd, uint8 reg, uint8* val)
 
 uint8 mpu6050_init(void)
 {
-    if (open("i2c-1", O_RDWR) < 0) {
+    fd = open("i2c-1", O_RDWR);
+    if (fd < 0) {
         // device file, major num, minor num
         mknod("i2c-1", I2C, 1);
         fd = open("i2c-1", O_RDWR);
-    }
-
-    if (fd < 0) {
-        printf("cannot open i2c-1\n");
-        exit(1);
     }
 
     printf("open i2c-1 success\n");

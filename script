@@ -7,6 +7,16 @@ RED='\033[0;31m'
 # ANSI escape code to reset text color
 RESET='\033[0m'
 
+if [ ! -d "port/image/root" ]; then
+    mkdir -p "port/image/root"
+    echo -e "${RED}created necessary directory${RESET}"
+fi
+
+if [ ! -d "port/image/tmp" ]; then
+    mkdir -p "port/image/tmp"
+    echo -e "${RED}created necessary directory${RESET}"
+fi
+
 make clean
 make fs.img
 make kernel/kernel && echo -e "${RED}generated kernel.bin${RESET}"

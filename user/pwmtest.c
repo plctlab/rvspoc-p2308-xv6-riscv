@@ -11,12 +11,12 @@
 
 int main(void)
 {
-    int fd = open("pwm", O_RDONLY);
+    int fd = open("pwm-1", O_RDONLY);
 
     if (fd < 0) {
         // pwm controller 1
-        mknod("pwm", PWM, 1);
-        fd = open("pwm", O_RDONLY);
+        mknod("pwm-1", PWM, 1);
+        fd = open("pwm-1", O_RDONLY);
     }
 
     printf("open pwm success!\n");

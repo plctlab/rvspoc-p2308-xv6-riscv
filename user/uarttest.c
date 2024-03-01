@@ -16,16 +16,11 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    int fd = -1;
-
-    if (open("ttyS4", O_RDWR) < 0) {
-        mknod("ttyS4", UART, 4);
-        fd = open("ttyS4", O_RDWR);
-    }
+    int fd = open("ttyS4", O_RDWR);
 
     if (fd < 0) {
-        printf("cannot open ttyS4\n");
-        exit(1);
+        mknod("ttyS4", UART, 4);
+        fd = open("ttyS4", O_RDWR);
     }
 
     printf("open ttyS4 success\n");

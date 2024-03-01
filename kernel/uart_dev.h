@@ -1,10 +1,10 @@
 struct uartconfig {
     unsigned int  baud;
-	unsigned int  databits;
-	unsigned char stopbits;
+    unsigned int  databits;
+    unsigned char stopbits;
     // 'n' for no parity, 'o' for odd parity
     // 'e' for even parity, 's' for sticky parity
-	unsigned int  parity; 
+    unsigned int  parity; 
 };
 
 #define SET_CONFIG 0x0101

@@ -59,6 +59,10 @@ main()
 
     reg = (volatile uint32*) 0x03002094;
     printf("div_clk_gpio_db: %x %p\n", *reg, *reg);
+
+    reg = (volatile uint32*) 0x03002100;
+    printf("div_clk_spi: %x %p\n", *reg, *reg);
+
     printf("\n");
 
     kinit();         // physical page allocator
@@ -94,6 +98,8 @@ main()
     printf("Initialized pwm controller\n");
     gpiodev_init();
     printf("Initialized gpio controller\n");
+    spidev_init();
+    printf("Initialized spi controller\n");
     userinit();      // first user process
     __sync_synchronize();
     started = 1;
