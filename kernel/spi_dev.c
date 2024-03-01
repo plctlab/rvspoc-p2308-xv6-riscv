@@ -142,12 +142,19 @@ transfer(uint64 xfer_addr, uint xfer_num)
       }
     }
 
+    int status;
+    do {
+      status = dw_readl(&dws, DW_SPI_SR);
+    }
+    while (!(status & SR_TF_EMPT) || (status & SR_BUSY));
+
     if (xfer[i].rx_buf)
       either_copyout(1, xfer[i].rx_buf, rx_buf, len);
 
     spi_enable_chip(&dws, 0);
   }
 }
+
 int
 spidev_ioctl(int user_src, unsigned int cmd, unsigned long arg)
 {
